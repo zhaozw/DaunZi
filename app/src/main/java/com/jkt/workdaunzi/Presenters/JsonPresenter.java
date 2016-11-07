@@ -2,12 +2,20 @@ package com.jkt.workdaunzi.Presenters;
 
 import com.google.gson.Gson;
 import com.jkt.workdaunzi.View.IJsonView;
+import com.jkt.workdaunzi.models.DuanZiModel;
+import com.jkt.workdaunzi.models.PictureModel;
+import com.jkt.workdaunzi.models.RecommendModel;
+import com.jkt.workdaunzi.models.VideoModel;
 
 /**
  * Created by 天哥哥 on 2016/10/13 0013.
  */
 
 public class JsonPresenter implements IJsonPresenter {
+    public static final int RECOMMEND_MODEL = 1;
+    public static final int VIDEO_MODEL = 2;
+    public static final int PICTURE_MODEL = 3;
+    public static final int DUANZI_MODEL = 4;
     private IJsonView mJsonView;
     private Class mClass;
     private String mMark;
@@ -21,17 +29,58 @@ public class JsonPresenter implements IJsonPresenter {
         mJsonView = jsonView;
         this.mClass = aClass;
         mMark = mark;
+        mGson = new Gson();
     }
 
     @Override
     public void parseJsonByGson(String jsonString) {
         switch (judgeType()) {
+            case RECOMMEND_MODEL:
+                gsonPraseRecommend(jsonString);
+                break;
+            case VIDEO_MODEL:
+                gsonPraseVideo(jsonString);
+                break;
+            case PICTURE_MODEL:
+                gsonPrasePicture(jsonString);
+                break;
+            case DUANZI_MODEL:
+                gsonPraseDuanZi(jsonString);
+                break;
         }
     }
 
+    private void gsonPraseVideo(String jsonString) {
+        VideoModel videoModel = mGson.fromJson(jsonString, VideoModel.class);
+        mJsonView.getModelObjectByJson(videoModel, "VideoModel");
+    }
+
+    private void gsonPrasePicture(String jsonString) {
+        PictureModel pictureModel = mGson.fromJson(jsonString, PictureModel.class);
+        mJsonView.getModelObjectByJson(pictureModel, "PictureModel");
+    }
+
+    private void gsonPraseDuanZi(String jsonString) {
+        DuanZiModel duanZiModel = mGson.fromJson(jsonString, DuanZiModel.class);
+        mJsonView.getModelObjectByJson(duanZiModel, "DuanZiModel");
+    }
+
+    private void gsonPraseRecommend(String jsonString) {
+        RecommendModel recommendModel = mGson.fromJson(jsonString, RecommendModel.class);
+        mJsonView.getModelObjectByJson(recommendModel, "RecommendModel");
+    }
 
 
     private int judgeType() {
+        if (mClass.isInstance(new RecommendModel())) {
+            return RECOMMEND_MODEL;
+        } else if (mClass.isInstance(new VideoModel())) {
+            return VIDEO_MODEL;
+        } else if (mClass.isInstance(new PictureModel())) {
+            return PICTURE_MODEL;
+        } else if (mClass.isInstance(new DuanZiModel())) {
+            return DUANZI_MODEL;
+        }
         return -1;
     }
 

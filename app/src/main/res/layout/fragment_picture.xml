@@ -1,11 +1,13 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.jkt.workdaunzi.MainActivity">
-<TextView
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_picture_refreshLayout"
     android:layout_width="match_parent"
-    android:text="图片"
-    android:layout_height="wrap_content"/>
+    android:layout_height="match_parent"
+    tools:context="com.jkt.workdaunzi.MainActivity">
 
-</FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="图片"/>
+</android.support.v4.widget.SwipeRefreshLayout>
