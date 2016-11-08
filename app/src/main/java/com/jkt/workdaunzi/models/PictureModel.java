@@ -167,6 +167,8 @@ public class PictureModel {
                             ", share_count=" + share_count +
                             ", bury_count=" + bury_count +
                             ", digg_count=" + digg_count +
+                            ", large_image=" + large_image +
+                            ", gifvideo=" + gifvideo +
                             '}';
                 }
 
@@ -189,6 +191,26 @@ public class PictureModel {
                 private int share_count;
                 private int bury_count;
                 private int digg_count;
+                @SerializedName("large_image")
+                private large_imageBean large_image;
+                @SerializedName("gifvideo")
+                private gifvideoBean gifvideo;
+
+                public gifvideoBean getGifvideo() {
+                    return gifvideo;
+                }
+
+                public void setGifvideo(gifvideoBean gifvideo) {
+                    this.gifvideo = gifvideo;
+                }
+
+                public large_imageBean getLarge_image() {
+                    return large_image;
+                }
+
+                public void setLarge_image(large_imageBean large_image) {
+                    this.large_image = large_image;
+                }
 
                 public UserBean getUser() {
                     return user;
@@ -245,6 +267,112 @@ public class PictureModel {
 
                 public void setDigg_count(int digg_count) {
                     this.digg_count = digg_count;
+                }
+
+                public static class gifvideoBean {
+                    @Override
+                    public String toString() {
+                        return "gifvideoBean{" +
+                                "a480PVideo=" + a480PVideo +
+                                '}';
+                    }
+
+                    @SerializedName("480p_video")
+                    private a480PVideoBean a480PVideo;
+
+                    public a480PVideoBean getA480PVideo() {
+                        return a480PVideo;
+                    }
+
+                    public void setA480PVideo(a480PVideoBean a480PVideo) {
+                        this.a480PVideo = a480PVideo;
+                    }
+
+                    public static class a480PVideoBean {
+                        @Override
+                        public String toString() {
+                            return "a480PVideoBean{" +
+                                    "url_list=" + url_list +
+                                    '}';
+                        }
+
+                        /**
+                         * url : http://ic.snssdk.com/neihan/video/playback/?video_id=13d0f823387e47a78f28017bca46a553&quality=origin&line=0&is_gif=1
+                         */
+                        @SerializedName("url_list")
+                        private List<UrlListBean> url_list;
+
+                        public List<UrlListBean> getUrl_list() {
+                            return url_list;
+                        }
+
+                        public void setUrl_list(List<UrlListBean> url_list) {
+                            this.url_list = url_list;
+                        }
+
+                        public static class UrlListBean {
+                            @Override
+                            public String toString() {
+                                return "UrlListBean{" +
+                                        "url='" + url + '\'' +
+                                        '}';
+                            }
+
+                            @SerializedName("url")
+                            private String url;
+
+                            public String getUrl() {
+                                return url;
+                            }
+
+                            public void setUrl(String url) {
+                                this.url = url;
+                            }
+                        }
+                    }
+                }
+
+                public static class large_imageBean {
+                    @Override
+                    public String toString() {
+                        return "large_imageBean{" +
+                                "url_list=" + url_list +
+                                '}';
+                    }
+
+                    /**
+                     * url : http://p2.pstatp.com/large/ecb00045ee65aa08b6a
+                     */
+                    @SerializedName("url_list")
+                    private List<UrlListBean> url_list;
+
+                    public List<UrlListBean> getUrl_list() {
+                        return url_list;
+                    }
+
+                    public void setUrl_list(List<UrlListBean> url_list) {
+                        this.url_list = url_list;
+                    }
+
+                    public static class UrlListBean {
+                        @Override
+                        public String toString() {
+                            return "UrlListBean{" +
+                                    "url='" + url + '\'' +
+                                    '}';
+                        }
+
+                        @SerializedName("url")
+                        private String url;
+
+                        public String getUrl() {
+                            return url;
+                        }
+
+                        public void setUrl(String url) {
+                            this.url = url;
+                        }
+                    }
                 }
 
                 public static class UserBean {

@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class duanzifragment extends Fragment implements INetView, IJsonView, SwipeRefreshLayout.OnRefreshListener {
+public class DuanziFragment extends Fragment implements INetView, IJsonView, SwipeRefreshLayout.OnRefreshListener {
 
 
     private SwipeRefreshLayout mRefreshLayout;
@@ -45,7 +45,7 @@ public class duanzifragment extends Fragment implements INetView, IJsonView, Swi
     private List<DuanziModel.DataBean.DataBean1> mDataBean1List;
     private boolean mRefreshing;
 
-    public duanzifragment() {
+    public DuanziFragment() {
     }
 
     @Override

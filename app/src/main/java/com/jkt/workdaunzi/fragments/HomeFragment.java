@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment implements TabLayout.OnTabSelectedLis
         fragments.add(new RecommendFragment());
         fragments.add(new VideoFragment());
         fragments.add(new PictureFragment());
-        fragments.add(new duanzifragment());
+        fragments.add(new DuanziFragment());
         fragments.add(new NiceFragment());
         FragmentPagerAdapter adapter = new FragmentPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
