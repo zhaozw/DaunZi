@@ -4,13 +4,17 @@ package com.jkt.workdaunzi.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.jkt.workdaunzi.Presenters.JsonPresenter;
 import com.jkt.workdaunzi.Presenters.NetPresenter;
@@ -18,8 +22,8 @@ import com.jkt.workdaunzi.R;
 import com.jkt.workdaunzi.View.IJsonView;
 import com.jkt.workdaunzi.View.INetView;
 import com.jkt.workdaunzi.adpaters.LiveFragmentAdapter;
+import com.jkt.workdaunzi.customviews.MyScrollView;
 import com.jkt.workdaunzi.models.LiveModel;
-import com.jkt.workdaunzi.tool.Ui;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,29 +36,31 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LiveFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, INetView, IJsonView {
+public class LiveFragment extends Fragment implements INetView, IJsonView, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, MyScrollView.IScrollListener {
 
 
-    private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout mRefreshLayout;
     private File mFile;
+    private FrameLayout mFrameLayout;
+    private ProgressBar mProgressBar;
+    private TextView mTextView;
+    private Button mButton;
+    private int mY;
+    private int mHeightPixels;
+    private int[] mLocation;
+    private int mPage = 1;
+    private int mAllPage = 1;
+    private List<LiveModel.DataBean.ListBean> mListBeanList;
+    private LiveFragmentAdapter mAdapter;
+    private boolean mGetMoreing;
+    private TextView mFinishTextView;
     private int mLastVisibleItem;
     private LinearLayoutManager mLayoutManager;
-    private LiveFragmentAdapter mHotFragmentAdapter;
-    private int mPage = 1;
-    private List<LiveModel.DataBean.ListBean> mListBeanList = new ArrayList<>();
-    private int mAll_page;
-    private boolean mRefreshing;
+    private MyScrollView mMyScrollView;
+
 
     public LiveFragment() {
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        String url = "http://live.9158.com/Room/GetNewRoomOnline?page=1";
-        new NetPresenter(this, "LiveModel").getNetByteByOkHttp3(url,
-                "GET", null, null, null);
     }
 
     @Override
@@ -63,10 +69,28 @@ public class LiveFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View inflate = inflater.inflate(R.layout.fragment_live, container, false);
         initViews(inflate);
         initRecyclerViewLayout();
+        initRecyclerViewAdapter();
+        initMeasurePixels();
+        initListeners();
         initCacheData();
         initNet();
-        initListeners();
+
         return inflate;
+    }
+
+    private void initRecyclerViewAdapter() {
+        mListBeanList = new ArrayList<>();
+        mAdapter = new LiveFragmentAdapter(getContext(), mListBeanList);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+
+    private void initListeners() {
+
+        mRefreshLayout.setOnRefreshListener(this);
+        mMyScrollView.setIScrollListener(this);
+        mButton.setOnClickListener(this);
+
     }
 
     private void initNet() {
@@ -77,59 +101,21 @@ public class LiveFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 "GET", null, null, null);
     }
 
-    private void initListeners() {
-        mRefreshLayout.setOnRefreshListener(this);
-        mRecyclerView.addOnScrollListener(
-                new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                        if (newState == RecyclerView.SCROLL_STATE_IDLE
-                                &&mHotFragmentAdapter!=null && mLastVisibleItem + 1 == mHotFragmentAdapter.getItemCount()) {
-                            if (mPage < mAll_page && !mRefreshing) {
-                                initMoreNet();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-                    }
-                }
-
-        );
-    }
-
-    private void initMoreNet() {
-        mRefreshing = true;
-        mPage++;
-        mRefreshLayout.setRefreshing(true);
-        String url = "http://live.9158.com/Room/GetHotLive_v2?lon=0.0&province=&lat=0.0&page=1&type=" + mPage;
-        new NetPresenter(this, "LiveModel").getNetByteByOkHttp3(url,
-                "GET", null, null, null);
-    }
-
-    private void initRecyclerViewLayout() {
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-    }
-
     private void initViews(View inflate) {
-        mRefreshLayout = ((SwipeRefreshLayout) inflate.findViewById(R.id.fragment_live_refreshLayout));
         mRecyclerView = ((RecyclerView) inflate.findViewById(R.id.fragment_live_recyclerView));
-    }
-
-    @Override
-    public void onRefresh() {
-        initNet();
+        mMyScrollView = ((MyScrollView) inflate.findViewById(R.id.fragment_live_myScrollView));
+        mRefreshLayout = ((SwipeRefreshLayout) inflate.findViewById(R.id.fragment_live_refreshLayout));
+        mFrameLayout = ((FrameLayout) inflate.findViewById(R.id.fragment_live_FrameLayout));
+        mProgressBar = ((ProgressBar) inflate.findViewById(R.id.fragment_live_progressBar));
+        mTextView = ((TextView) inflate.findViewById(R.id.fragment_live_textView));
+        mButton = ((Button) inflate.findViewById(R.id.fragment_live_button));
+        mFinishTextView = ((TextView) inflate.findViewById(R.id.fragment_live_finishTextView));
     }
 
     @Override
     public void getNetSuccess(byte[] bytes, String mark) {
         mRefreshLayout.setRefreshing(false);
+        mGetMoreing = false;
         Log.i("LiveModel", "成功获得网络");
         switch (mark) {
             case "LiveModel":
@@ -146,11 +132,14 @@ public class LiveFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
 
+
     @Override
     public void getNetFail(Exception e) {
-        Log.i("TTT", "获取网络失败");
-        mRefreshing = false;
         mRefreshLayout.setRefreshing(false);
+        mButton.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mTextView.setVisibility(View.INVISIBLE);
+        mGetMoreing = false;
     }
 
     @Override
@@ -160,38 +149,58 @@ public class LiveFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void getModelObjectByJson(Object object, String mark) {
-        Log.i("LiveModel", "解析成功");
+        Log.i("LiveModel", "成功获得json");
         switch (mark) {
             case "LiveModel":
-                if (object != null && object instanceof LiveModel) {
-                    LiveModel hotModel = (LiveModel) object;
-                    initRecyclerViewData(hotModel);
-                }
+                Log.i("LiveModel", "成功获得json..");
+                initRecyclerViewData(object);
                 break;
         }
     }
 
-    private void initRecyclerViewData(LiveModel hotModel) {
-        mAll_page = hotModel.getData().getTotalPage();
-        Log.i("LiveModel", hotModel.toString());
-        List<LiveModel.DataBean.ListBean> listBeanList = hotModel.getData().getList();
-        Log.i("LiveModel", listBeanList.size() + "");
-        if (mPage != 1) {
-            mListBeanList.addAll(listBeanList);
-            mHotFragmentAdapter.notifyDataSetChanged();
-            float px = Ui.Dp2Px(getActivity(), -100);
-            mRecyclerView.offsetChildrenVertical(((int) px));
-            mRefreshing = false;
-            return;
-        } else {
-            mListBeanList.clear();
-            mListBeanList = listBeanList;
+    private void initRecyclerViewData(Object object) {
+        if (object != null && object instanceof LiveModel) {
+            LiveModel liveModel = (LiveModel) object;
+            List<LiveModel.DataBean.ListBean> itemBeanList = liveModel.getData().getList();
+            if (itemBeanList != null && itemBeanList.size() > 0) {
+                if (mPage == 1) {
+                    mAllPage = liveModel.getData().getTotalPage();
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    mTextView.setVisibility(View.VISIBLE);
+                    mButton.setVisibility(View.INVISIBLE);
+                    mFinishTextView.setVisibility(View.INVISIBLE);
+                    mListBeanList.clear();
+                }
+                if (mPage < mAllPage) {
+                    mListBeanList.addAll(itemBeanList);
+                    mAdapter.notifyDataSetChanged();
+                } else if (mPage == mAllPage) {
+                    mListBeanList.addAll(itemBeanList);
+                    mAdapter.notifyDataSetChanged();
+                    mFinishTextView.setVisibility(View.VISIBLE);
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                    mButton.setVisibility(View.INVISIBLE);
+                    mTextView.setVisibility(View.INVISIBLE);
+                }
+            } else {
+                mProgressBar.setVisibility(View.INVISIBLE);
+                mTextView.setVisibility(View.INVISIBLE);
+                mButton.setVisibility(View.VISIBLE);
+            }
         }
-        mHotFragmentAdapter = new LiveFragmentAdapter(getContext(), mListBeanList);
-        mRecyclerView.setAdapter(mHotFragmentAdapter);
-        mHotFragmentAdapter.notifyDataSetChanged();
     }
 
+    private void initRecyclerViewLayout() {
+        mLayoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    @Override
+    public void onRefresh() {
+        mRefreshLayout.setRefreshing(true);
+        initNet();
+    }
 
     private void initCacheData() {
         File filesDir = getContext().getFilesDir();
@@ -217,11 +226,11 @@ public class LiveFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 }
             }
         }
-
     }
 
+
     private void saveDataFile(byte[] bytes) {
-        if (mFile != null && mFile.exists() && mFile.length() > 0) {
+        if (mFile.exists() && mFile.length() > 0) {
             mFile.delete();
         }
         File filesDir = getContext().getFilesDir();
@@ -241,4 +250,36 @@ public class LiveFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
 
+    private void initMoreNet() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mTextView.setVisibility(View.VISIBLE);
+        mButton.setVisibility(View.INVISIBLE);
+        mGetMoreing = true;
+        mPage++;
+        String url = "http://live.9158.com/Room/GetHotLive_v2?lon=0.0&province=&lat=0.0&page=" + mPage + "&type=1";
+        new NetPresenter(this, "LiveModel").getNetByteByOkHttp3(url,
+                "GET", null, null, null);
+    }
+
+    private void initMeasurePixels() {
+        mLocation = new int[2];
+        DisplayMetrics mOutMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mOutMetrics);
+        mHeightPixels = mOutMetrics.heightPixels;
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        initMoreNet();
+    }
+
+    @Override
+    public void scrollChanged(MyScrollView myScrollView, int l, int t, int oldl, int oldt) {
+        mFrameLayout.getLocationOnScreen(mLocation);
+        mY = mLocation[1];
+        if (Math.abs(mY) <= mHeightPixels && !mGetMoreing && mPage < mAllPage) {
+            initMoreNet();
+        }
+    }
 }

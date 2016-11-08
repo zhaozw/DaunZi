@@ -32,7 +32,7 @@ public class LiveFragmentAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflate = mLayoutInflater.inflate(R.layout.item_hot, parent, false);
+        View inflate = mLayoutInflater.inflate(R.layout.item_live, parent, false);
         return new HotViewHolder(inflate);
     }
 

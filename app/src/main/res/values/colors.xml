@@ -8,5 +8,9 @@
     <color name="colorGray">#868484</color>
     <color name="colorPurple">#9B30FF</color>
     <color name="colorBrown">#8B4726</color>
+    <color name="colorProgressGray">#737272</color>
+    <color name="colorlowBrown">#d0815c</color>
+    <color name="colorWhite">#f1ecf5</color>
+
 
 </resources>
