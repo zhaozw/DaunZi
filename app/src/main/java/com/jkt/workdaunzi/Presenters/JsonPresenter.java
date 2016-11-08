@@ -57,22 +57,30 @@ public class JsonPresenter implements IJsonPresenter {
 
     private void gsonPraseLive(String jsonString) {
         LiveModel liveModel = mGson.fromJson(jsonString, LiveModel.class);
-        mJsonView.getModelObjectByJson(liveModel, "LiveModel");
+        if ("success".equals(liveModel.getMsg())) {
+            mJsonView.getModelObjectByJson(liveModel, "LiveModel");
+        }
     }
 
     private void gsonPraseVideo(String jsonString) {
         VideoModel videoModel = mGson.fromJson(jsonString, VideoModel.class);
-        mJsonView.getModelObjectByJson(videoModel, "VideoModel");
+        if ("success".equals(videoModel.getMessage())) {
+            mJsonView.getModelObjectByJson(videoModel, "VideoModel");
+        }
     }
 
     private void gsonPrasePicture(String jsonString) {
         PictureModel pictureModel = mGson.fromJson(jsonString, PictureModel.class);
-        mJsonView.getModelObjectByJson(pictureModel, "PictureModel");
+        if ("success".equals(pictureModel.getMessage())) {
+            mJsonView.getModelObjectByJson(pictureModel, "PictureModel");
+        }
     }
 
     private void gsonPraseDuanZi(String jsonString) {
         DuanziModel duanZiModel = mGson.fromJson(jsonString, DuanziModel.class);
-        mJsonView.getModelObjectByJson(duanZiModel, "DuanziModel");
+        if ("success".equals(duanZiModel.getMessage())) {
+            mJsonView.getModelObjectByJson(duanZiModel, "DuanziModel");
+        }
     }
 
     private void gsonPraseRecommend(String jsonString) {

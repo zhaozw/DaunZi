@@ -85,14 +85,16 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
             }
             if (contentTextView != null && dataBean1.getGroup() != null) {
                 contentTextView.setText(dataBean1.getGroup().getText());
+                if ("".equals(contentTextView.getText()) || contentTextView.getText() == null) {
+                    contentTextView.setVisibility(View.GONE);
+                }
             }
             if (userIconView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null && dataBean1.getGroup().getUser().getAvatar_url() != null && !"".equals(dataBean1.getGroup().getUser().getAvatar_url())) {
                 Picasso.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url()).fit().into(userIconView);
             }
-//            if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getGifvideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0) != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl())) {
-//                Picasso.with(mContext).load(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl()).fit().into(pictureImageView);
-//            } else
-            if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getLarge_image() != null && dataBean1.getGroup().getLarge_image().getUrl_list() != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0) != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null)) {
+            if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getGifvideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0) != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl())) {
+                Picasso.with(mContext).load(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl()).into(pictureImageView);
+            } else if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getLarge_image() != null && dataBean1.getGroup().getLarge_image().getUrl_list() != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0) != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null)) {
                 Picasso.with(mContext).load(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl()).into(pictureImageView);
             }
 

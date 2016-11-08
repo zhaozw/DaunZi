@@ -132,7 +132,7 @@ public class DuanziFragment extends Fragment implements INetView, IJsonView, Swi
         Log.i("DuanziModel", "成功获得网络");
         switch (mark) {
             case "DuanziModel":
-                if (mPage == 1) {
+                if (mPage == 1&&bytes.length>100) {
                     saveDataFile(bytes);
                 }
                 try {

@@ -133,7 +133,7 @@ public class LiveFragment extends Fragment implements INetView, IJsonView, Swipe
         Log.i("LiveModel", "成功获得网络");
         switch (mark) {
             case "LiveModel":
-                if (mPage == 1) {
+                if (mPage == 1&&bytes.length>100) {
                     saveDataFile(bytes);
                 }
                 try {
