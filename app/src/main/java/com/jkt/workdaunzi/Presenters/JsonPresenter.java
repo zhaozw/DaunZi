@@ -3,6 +3,7 @@ package com.jkt.workdaunzi.Presenters;
 import com.google.gson.Gson;
 import com.jkt.workdaunzi.View.IJsonView;
 import com.jkt.workdaunzi.models.DuanZiModel;
+import com.jkt.workdaunzi.models.LiveModel;
 import com.jkt.workdaunzi.models.PictureModel;
 import com.jkt.workdaunzi.models.RecommendModel;
 import com.jkt.workdaunzi.models.VideoModel;
@@ -12,10 +13,11 @@ import com.jkt.workdaunzi.models.VideoModel;
  */
 
 public class JsonPresenter implements IJsonPresenter {
-    public static final int RECOMMEND_MODEL = 1;
-    public static final int VIDEO_MODEL = 2;
-    public static final int PICTURE_MODEL = 3;
-    public static final int DUANZI_MODEL = 4;
+    public static final int LIVE_MODEL = 1;
+    public static final int RECOMMEND_MODEL = 2;
+    public static final int VIDEO_MODEL = 3;
+    public static final int PICTURE_MODEL = 4;
+    public static final int DUANZI_MODEL = 5;
     private IJsonView mJsonView;
     private Class mClass;
     private String mMark;
@@ -35,6 +37,9 @@ public class JsonPresenter implements IJsonPresenter {
     @Override
     public void parseJsonByGson(String jsonString) {
         switch (judgeType()) {
+            case LIVE_MODEL:
+                gsonPraseLive(jsonString);
+                break;
             case RECOMMEND_MODEL:
                 gsonPraseRecommend(jsonString);
                 break;
@@ -48,6 +53,11 @@ public class JsonPresenter implements IJsonPresenter {
                 gsonPraseDuanZi(jsonString);
                 break;
         }
+    }
+
+    private void gsonPraseLive(String jsonString) {
+        LiveModel liveModel = mGson.fromJson(jsonString, LiveModel.class);
+        mJsonView.getModelObjectByJson(liveModel, "LiveModel");
     }
 
     private void gsonPraseVideo(String jsonString) {
@@ -72,7 +82,9 @@ public class JsonPresenter implements IJsonPresenter {
 
 
     private int judgeType() {
-        if (mClass.isInstance(new RecommendModel())) {
+        if (mClass.isInstance(new LiveModel())) {
+            return LIVE_MODEL;
+        } else if (mClass.isInstance(new RecommendModel())) {
             return RECOMMEND_MODEL;
         } else if (mClass.isInstance(new VideoModel())) {
             return VIDEO_MODEL;
