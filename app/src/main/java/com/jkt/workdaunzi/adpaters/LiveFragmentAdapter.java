@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jkt.workdaunzi.R;
@@ -75,6 +76,10 @@ public class LiveFragmentAdapter extends RecyclerView.Adapter {
             HotViewHolder hotViewHolder = (HotViewHolder) holder;
             hotViewHolder.bindView(mListBeanList.get(position));
         }
+        if (position == mListBeanList.size()) {
+            FoorViewHolder foorViewHolder = (FoorViewHolder) holder;
+            foorViewHolder.bindView();
+        }
     }
 
     @Override
@@ -94,10 +99,10 @@ public class LiveFragmentAdapter extends RecyclerView.Adapter {
 
         void bindView(LiveModel.DataBean.ListBean listBean) {
             mFlv = listBean.getFlv();
-            TextView userNameView = (TextView) customFindViewByID(R.id.item_hot_userName);
-            TextView addressView = (TextView) customFindViewByID(R.id.item_hot_address);
-            TextView viewsView = (TextView) customFindViewByID(R.id.item_hot_views);
-            ImageView userIconView = (ImageView) customFindViewByID(R.id.item_hot_userIcon);
+            TextView userNameView = (TextView) customFindViewByID(R.id.item_live_userName);
+            TextView addressView = (TextView) customFindViewByID(R.id.item_live_address);
+            TextView viewsView = (TextView) customFindViewByID(R.id.item_live_views);
+            ImageView userIconView = (ImageView) customFindViewByID(R.id.item_live_userIcon);
             ImageView imageView = (ImageView) customFindViewByID(R.id.item_hot_image);
             if (userNameView != null) {
                 userNameView.setText(listBean.getMyname());
@@ -139,12 +144,28 @@ public class LiveFragmentAdapter extends RecyclerView.Adapter {
 
     public class FoorViewHolder extends RecyclerView.ViewHolder {
 
+        private final TextView mFinishTextView;
+        private final TextView mTextView;
+        private final ProgressBar mProgressBar;
+
         public FoorViewHolder(View itemView) {
             super(itemView);
-            if (mListBeanList.size() == 0 || mAllPage==mCurrentPage) {
+            mFinishTextView = ((TextView) itemView.findViewById(R.id.item_more_finishTextView));
+            mTextView = ((TextView) itemView.findViewById(R.id.item_more_textView));
+            mProgressBar = ((ProgressBar) itemView.findViewById(R.id.item_more_progressBar));
+        }
+
+        private void bindView() {
+            if (mListBeanList.size() == 0) {
                 itemView.setVisibility(View.GONE);
-            } else {
-                itemView.setVisibility(View.VISIBLE);
+            } else if (0 < mListBeanList.size() && mCurrentPage < mAllPage) {
+                mFinishTextView.setVisibility(View.GONE);
+                mTextView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
+            } else if (mAllPage == mCurrentPage) {
+                mTextView.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.GONE);
+                mFinishTextView.setVisibility(View.VISIBLE);
             }
         }
     }
