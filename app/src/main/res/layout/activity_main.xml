@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
               tools:context="com.jkt.workdaunzi.MainActivity">
-
 
     <FrameLayout
         android:id="@+id/m_container"
@@ -18,23 +16,23 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.6dp"
-        android:background="#224d4d4d" />
+        android:background="#224d4d4d"/>
 
     <RadioGroup
         android:id="@+id/m_radio"
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:layout_marginBottom="5dp"
         android:background="#44F7F7F7"
         android:divider="#4d4d4d"
         android:orientation="horizontal"
         android:paddingTop="9dp"
-        android:layout_marginBottom="5dp"
         android:textColor="@drawable/m_radiobutton_state">
 
         <RadioButton
             android:id="@+id/m_button0"
             style="@style/m_radioBUtton_shouye"
-            android:checked="true" />
+            android:checked="true"/>
 
         <RadioButton
             android:id="@+id/m_button1"

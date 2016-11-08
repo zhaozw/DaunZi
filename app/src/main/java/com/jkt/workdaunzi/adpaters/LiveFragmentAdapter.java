@@ -22,9 +22,28 @@ import java.util.List;
  */
 
 public class LiveFragmentAdapter extends RecyclerView.Adapter {
+    public static final int Foor = 1;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<LiveModel.DataBean.ListBean> mListBeanList;
+    private int mAllPage;
+    private int mCurrentPage;
+
+    public int getAllPage() {
+        return mAllPage;
+    }
+
+    public void setAllPage(int allPage) {
+        mAllPage = allPage;
+    }
+
+    public int getCurrentPage() {
+        return mCurrentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.mCurrentPage = currentPage;
+    }
 
     public LiveFragmentAdapter(Context context, List<LiveModel.DataBean.ListBean> listBeanList) {
         mContext = context;
@@ -33,20 +52,34 @@ public class LiveFragmentAdapter extends RecyclerView.Adapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if (position == mListBeanList.size()) {
+            return Foor;
+        }
+        return super.getItemViewType(position);
+    }
+
+    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == Foor) {
+            View inflate = mLayoutInflater.inflate(R.layout.item_more, parent, false);
+            return new FoorViewHolder(inflate);
+        }
         View inflate = mLayoutInflater.inflate(R.layout.item_live, parent, false);
         return new HotViewHolder(inflate);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        HotViewHolder hotViewHolder = (HotViewHolder) holder;
-        hotViewHolder.bindView(mListBeanList.get(position));
+        if (position < mListBeanList.size()) {
+            HotViewHolder hotViewHolder = (HotViewHolder) holder;
+            hotViewHolder.bindView(mListBeanList.get(position));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mListBeanList.size();
+        return mListBeanList.size() + 1;
     }
 
     public class HotViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -100,6 +133,18 @@ public class LiveFragmentAdapter extends RecyclerView.Adapter {
                 Intent intent = new Intent(mContext, ZhiBoActivity.class);
                 intent.putExtra("Flv", mFlv);
                 mContext.startActivity(intent);
+            }
+        }
+    }
+
+    public class FoorViewHolder extends RecyclerView.ViewHolder {
+
+        public FoorViewHolder(View itemView) {
+            super(itemView);
+            if (mListBeanList.size() == 0 || mAllPage==mCurrentPage) {
+                itemView.setVisibility(View.GONE);
+            } else {
+                itemView.setVisibility(View.VISIBLE);
             }
         }
     }
