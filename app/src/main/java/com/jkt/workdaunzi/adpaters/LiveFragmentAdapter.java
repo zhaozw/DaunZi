@@ -1,6 +1,7 @@
 package com.jkt.workdaunzi.adpaters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jkt.workdaunzi.R;
+import com.jkt.workdaunzi.ZhiBoActivity;
 import com.jkt.workdaunzi.models.LiveModel;
 import com.squareup.picasso.Picasso;
 
@@ -47,14 +49,14 @@ public class LiveFragmentAdapter extends RecyclerView.Adapter {
         return mListBeanList.size();
     }
 
-    public class HotViewHolder extends RecyclerView.ViewHolder  {
+    public class HotViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final SparseArrayCompat<View> mSparseArrayCompat;
         private String mFlv;
 
         public HotViewHolder(View itemView) {
             super(itemView);
             mSparseArrayCompat = new SparseArrayCompat<>();
-//            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         void bindView(LiveModel.DataBean.ListBean listBean) {
@@ -92,14 +94,14 @@ public class LiveFragmentAdapter extends RecyclerView.Adapter {
             return ret;
         }
 
-//        @Override
-//        public void onClick(View v) {
-//            if (mFlv != null) {
-//                Intent intent = new Intent(mContext, ZhiBoActivity.class);
-//                intent.putExtra("Flv", mFlv);
-//                mContext.startActivity(intent);
-//            }
-//        }
+        @Override
+        public void onClick(View v) {
+            if (mFlv != null) {
+                Intent intent = new Intent(mContext, ZhiBoActivity.class);
+                intent.putExtra("Flv", mFlv);
+                mContext.startActivity(intent);
+            }
+        }
     }
 }
 

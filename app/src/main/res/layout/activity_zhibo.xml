@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_zhibo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.jkt.workdaunzi.ZhiBoActivity">
+
+    <io.vov.vitamio.widget.VideoView
+        android:id="@+id/zhibo_videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.jkt.workdaunzi.customviews.BarrageRelativeLayout
+        android:layout_marginBottom="55dp"
+        android:id="@+id/zhibo_danmu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#0000">
+
+    </com.jkt.workdaunzi.customviews.BarrageRelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/zhibo_chooseLayout"
+        android:layout_gravity="bottom">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/zhibo_showDanmuTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/button_bg"
+                android:text="弹幕"
+                android:textColor="@color/colorBrown"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right">
+
+            <Button
+                android:id="@+id/zhibo_showInputTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/button_bg"
+                android:text="聊天"
+                android:textColor="@color/colorBrown"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/zhibo_EditLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:visibility="invisible">
+        <Button
+            android:id="@+id/zhibo_hideButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_button"
+            android:paddingBottom="10dp"
+            android:text="关闭"
+            android:textColor="@color/colorBrown"
+            android:textSize="18sp"/>
+        <EditText
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:gravity="center_vertical"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/zhibo_editText"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/edit_bg"/>
+
+        <Button
+            android:paddingBottom="10dp"
+            android:id="@+id/zhibo_sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_button"
+            android:text="发送"
+            android:textColor="@color/colorBrown"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/zhibo_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateDrawable="@drawable/progressbar"/>
+
+    <LinearLayout
+        android:id="@+id/zhibo_finishLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="200dp"
+            android:orientation="vertical"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="top"
+                android:background="#fff"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:gravity="center"
+                android:text="直播结束"
+                android:textColor="#fff"
+                android:textSize="20sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:background="#fff"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:orientation="vertical"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
+
+
+            <Button
+                android:id="@+id/zhibo_exitButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_bg"
+                android:text="退出直播间"
+                android:textColor="#d06c6c"
+                android:textSize="20sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
