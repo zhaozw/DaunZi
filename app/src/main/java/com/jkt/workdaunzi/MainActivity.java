@@ -9,6 +9,7 @@ import android.widget.RadioGroup;
 import com.jkt.workdaunzi.fragments.CountFragment;
 import com.jkt.workdaunzi.fragments.DescoveryFragment;
 import com.jkt.workdaunzi.fragments.HomeFragment;
+import com.jkt.workdaunzi.tool.CustomToast;
 
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -17,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private HomeFragment mHomeFragment;
     private DescoveryFragment mDescoveryFragment;
     private CountFragment mCountFragment;
+    private long mTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,4 +83,14 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         beforeFragment = fragment;
     }
 
+    @Override
+    public void onBackPressed() {
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis - mTime > 2000) {
+            CustomToast.getToast(this, "再按一次退出").show();
+            mTime = currentTimeMillis;
+            return;
+        }
+        super.onBackPressed();
+    }
 }

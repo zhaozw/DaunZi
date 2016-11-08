@@ -13,7 +13,7 @@ public class CustomToast {
     public static Toast getToast(Context context, String message) {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         View view = toast.getView();
-        view.setBackgroundColor(Color.argb(0x66, 0xf2, 0x51, 0x79));
+        view.setBackgroundColor(Color.argb(0x66,0x8B,0x47,0x26));
         return toast;
     }
 
