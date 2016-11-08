@@ -1,0 +1,3 @@
+[submodule "myvitamio"]
+	path = myvitamio
+	url = https://git.oschina.net/1806613533/myvitamio.git
