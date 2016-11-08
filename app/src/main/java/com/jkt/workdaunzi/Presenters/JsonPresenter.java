@@ -2,7 +2,7 @@ package com.jkt.workdaunzi.Presenters;
 
 import com.google.gson.Gson;
 import com.jkt.workdaunzi.View.IJsonView;
-import com.jkt.workdaunzi.models.DuanZiModel;
+import com.jkt.workdaunzi.models.DuanziModel;
 import com.jkt.workdaunzi.models.LiveModel;
 import com.jkt.workdaunzi.models.PictureModel;
 import com.jkt.workdaunzi.models.RecommendModel;
@@ -71,8 +71,8 @@ public class JsonPresenter implements IJsonPresenter {
     }
 
     private void gsonPraseDuanZi(String jsonString) {
-        DuanZiModel duanZiModel = mGson.fromJson(jsonString, DuanZiModel.class);
-        mJsonView.getModelObjectByJson(duanZiModel, "DuanZiModel");
+        DuanziModel duanZiModel = mGson.fromJson(jsonString, DuanziModel.class);
+        mJsonView.getModelObjectByJson(duanZiModel, "DuanziModel");
     }
 
     private void gsonPraseRecommend(String jsonString) {
@@ -90,7 +90,7 @@ public class JsonPresenter implements IJsonPresenter {
             return VIDEO_MODEL;
         } else if (mClass.isInstance(new PictureModel())) {
             return PICTURE_MODEL;
-        } else if (mClass.isInstance(new DuanZiModel())) {
+        } else if (mClass.isInstance(new DuanziModel())) {
             return DUANZI_MODEL;
         }
         return -1;

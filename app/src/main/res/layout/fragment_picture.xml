@@ -4,10 +4,18 @@
     android:id="@+id/fragment_picture_refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.jkt.workdaunzi.MainActivity">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_picture_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="图片"/>
+        android:scrollbarFadeDuration="1"
+        android:scrollbarSize="3dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@color/colorlowBrown"
+        android:scrollbars="vertical"
+        >
+    </android.support.v7.widget.RecyclerView>
 </android.support.v4.widget.SwipeRefreshLayout>

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by 天哥哥 on 2016/11/7 0007.
  */
 
-public class DuanZiModel {
+public class DuanziModel {
     @Override
     public String toString() {
         return "DuanZiModel{" +

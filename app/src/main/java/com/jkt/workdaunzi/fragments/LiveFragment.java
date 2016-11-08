@@ -105,7 +105,6 @@ public class LiveFragment extends Fragment implements INetView, IJsonView, Swipe
     private void initMoreNet() {
         mRefreshing = true;
         mPage++;
-        mRefreshLayout.setRefreshing(true);
         String url = "http://live.9158.com/Room/GetHotLive_v2?lon=0.0&province=&lat=0.0&page=1&type=" + mPage;
         new NetPresenter(this, "LiveModel").getNetByteByOkHttp3(url,
                 "GET", null, null, null);
