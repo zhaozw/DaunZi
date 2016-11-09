@@ -51,6 +51,7 @@ public class RecommendModel {
     }
 
     public static class DataBean {
+
         @Override
         public String toString() {
             return "DataBean{" +

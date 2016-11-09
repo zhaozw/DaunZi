@@ -57,13 +57,13 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
             return new FoorViewHolder(inflate);
         }
         View inflate = mLayoutInflater.inflate(R.layout.item_picture, parent, false);
-        return new DunZiViewHolder(inflate);
+        return new PictureViewHolder(inflate);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position < mDataBean1List.size()) {
-            DunZiViewHolder hotViewHolder = (DunZiViewHolder) holder;
+            PictureViewHolder hotViewHolder = (PictureViewHolder) holder;
             hotViewHolder.bindView(mDataBean1List.get(position));
         }
         if (position == mDataBean1List.size()) {
@@ -77,10 +77,10 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
         return mDataBean1List.size() + 1;
     }
 
-    public class DunZiViewHolder extends RecyclerView.ViewHolder {
+    public class PictureViewHolder extends RecyclerView.ViewHolder {
         private final SparseArrayCompat<View> mSparseArrayCompat;
 
-        public DunZiViewHolder(View itemView) {
+        public PictureViewHolder(View itemView) {
             super(itemView);
             mSparseArrayCompat = new SparseArrayCompat<>();
         }
@@ -113,6 +113,7 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
                         .asGif()
                         .placeholder(drawable)
                         .into(pictureImageView);
+                return;
             } else if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddle_image() != null && dataBean1.getGroup().getMiddle_image().getUrl_list() != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null)) {
                 int width = dataBean1.getGroup().getMiddle_image().getWidth();
                 int height = dataBean1.getGroup().getMiddle_image().getHeight();
@@ -123,6 +124,7 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
                         .asBitmap()
                         .placeholder(drawable)
                         .into(pictureImageView);
+                return;
             }
 
         }

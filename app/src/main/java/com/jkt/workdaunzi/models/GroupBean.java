@@ -9,12 +9,21 @@ import java.util.List;
  */
 
 public class GroupBean {
+    public A480p_video getA480p_video() {
+        return a480p_video;
+    }
+
+    public void setA480p_video(A480p_video a480p_video) {
+        this.a480p_video = a480p_video;
+    }
+
     @Override
     public String toString() {
         return "GroupBean{" +
                 "mp4_url='" + mp4_url + '\'' +
                 ", digg_count=" + digg_count +
-                ", large_cover=" + large_cover +
+                ", a480p_video=" + a480p_video +
+                ", middleCover=" + middleCover +
                 ", title='" + title + '\'' +
                 ", user=" + user +
                 ", share_url='" + share_url + '\'' +
@@ -22,7 +31,7 @@ public class GroupBean {
                 ", share_count=" + share_count +
                 ", type=" + type +
                 ", bury_count=" + bury_count +
-                ", large_image=" + large_image +
+                ", middle_image=" + middle_image +
                 ", gifvideo=" + gifvideo +
                 ", text='" + text + '\'' +
                 '}';
@@ -98,12 +107,98 @@ public class GroupBean {
 
     private String mp4_url;
     private int digg_count;
+    @SerializedName("480p_video")
+    private A480p_video a480p_video;
+
+    public MiddleCoverBean getMiddle_cover() {
+        return middleCover;
+    }
+
+    public void setMiddle_cover(MiddleCoverBean large_cover) {
+        this.middleCover = large_cover;
+    }
+
+
+    public static class A480p_video {
+
+        @Override
+        public String toString() {
+            return "A480p_video{" +
+                    "width=" + width +
+                    ", uri='" + uri + '\'' +
+                    ", height=" + height +
+                    ", url_list=" + url_list +
+                    '}';
+        }
+
+        /**
+         * width : 640
+         * url_list : [{"url":"http://ic.snssdk.com/neihan/video/playback/?video_id=be4e8845998e4455b1de553edd2b6f9e&quality=480p&line=0&is_gif=0"},{"url":"http://ic.snssdk.com/neihan/video/playback/?video_id=be4e8845998e4455b1de553edd2b6f9e&quality=480p&line=1&is_gif=0"}]
+         * uri : 480p/be4e8845998e4455b1de553edd2b6f9e
+         * height : 360
+         */
+
+        private int width;
+        private String uri;
+        private int height;
+        /**
+         * url : http://ic.snssdk.com/neihan/video/playback/?video_id=be4e8845998e4455b1de553edd2b6f9e&quality=480p&line=0&is_gif=0
+         */
+
+        private List<UrlListBean> url_list;
+
+        public int getWidth() {
+            return width;
+        }
+
+        public void setWidth(int width) {
+            this.width = width;
+        }
+
+        public String getUri() {
+            return uri;
+        }
+
+        public void setUri(String uri) {
+            this.uri = uri;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public void setHeight(int height) {
+            this.height = height;
+        }
+
+        public List<UrlListBean> getUrl_list() {
+            return url_list;
+        }
+
+        public void setUrl_list(List<UrlListBean> url_list) {
+            this.url_list = url_list;
+        }
+
+        public static class UrlListBean {
+
+            private String url;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+        }
+    }
+
     /**
      * url_list : [{"url":"http://p2.pstatp.com/large/f89000153afa57a50d6.webp"},{"url":"http://pb3.pstatp.com/large/f89000153afa57a50d6.webp"},{"url":"http://pb3.pstatp.com/large/f89000153afa57a50d6.webp"}]
      * uri : large/f89000153afa57a50d6
      */
-
-    private LargeCoverBean large_cover;
+    @SerializedName("medium_cover")
+    private MiddleCoverBean middleCover;
     private String title;
     /**
      * user_id : 7008962434
@@ -122,19 +217,20 @@ public class GroupBean {
     private int share_count;
     private int type;
     private int bury_count;
-    @SerializedName("large_image")
-    private large_image large_image;
+    @SerializedName("middle_image")
+    private middle_image middle_image;
     @SerializedName("gifvideo")
     private gifvideo gifvideo;
     @SerializedName("text")
     private String text;
 
-    public GroupBean.large_image getLarge_image() {
-        return large_image;
+
+    public middle_image getMiddle_image() {
+        return middle_image;
     }
 
-    public void setLarge_image(GroupBean.large_image large_image) {
-        this.large_image = large_image;
+    public void setMiddle_image(middle_image large_image) {
+        this.middle_image = large_image;
     }
 
     public GroupBean.gifvideo getGifvideo() {
@@ -169,13 +265,6 @@ public class GroupBean {
         this.digg_count = digg_count;
     }
 
-    public LargeCoverBean getLarge_cover() {
-        return large_cover;
-    }
-
-    public void setLarge_cover(LargeCoverBean large_cover) {
-        this.large_cover = large_cover;
-    }
 
     public String getTitle() {
         return title;
@@ -233,7 +322,8 @@ public class GroupBean {
         this.bury_count = bury_count;
     }
 
-    public static class LargeCoverBean {
+    public static class MiddleCoverBean {
+
         @Override
         public String toString() {
             return "LargeCoverBean{" +
@@ -304,18 +394,42 @@ public class GroupBean {
         }
     }
 
-    public static class large_image {
+    public static class middle_image {
+
+        @SerializedName("width")
+        private int width;
+        @SerializedName("height")
+        private int height;
+
         @Override
         public String toString() {
-            return "large_image{" +
-                    "url_list=" + url_list +
+            return "middle_image{" +
+                    "width=" + width +
+                    ", height=" + height +
+                    ", url_list=" + url_list +
                     '}';
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public void setWidth(int width) {
+            this.width = width;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public void setHeight(int height) {
+            this.height = height;
         }
 
         /**
          * url : http://p1.pstatp.com/w440/ecb0001eb6795eaec7b.webp
          */
-
+        @SerializedName("url_list")
         private List<UrlListBean> url_list;
 
         public List<UrlListBean> getUrl_list() {
@@ -334,6 +448,7 @@ public class GroupBean {
                         '}';
             }
 
+            @SerializedName("url")
             private String url;
 
             public String getUrl() {
@@ -347,6 +462,80 @@ public class GroupBean {
     }
 
     public static class gifvideo {
+        @SerializedName("480p_video")
+        private B480p_video b480p_video;
+
+        public B480p_video getB480p_video() {
+            return b480p_video;
+        }
+
+        public void setB480p_video(B480p_video b480p_video) {
+            this.b480p_video = b480p_video;
+        }
+
+        public static class B480p_video {
+
+            /**
+             * width : 300
+             * url_list : [{"url":"http://ic.snssdk.com/neihan/video/playback/?video_id=793b25db09184498981a47dc94331ab1&quality=480p&line=0&is_gif=1"},{"url":"http://ic.snssdk.com/neihan/video/playback/?video_id=793b25db09184498981a47dc94331ab1&quality=480p&line=1&is_gif=1"}]
+             * uri : 480p/793b25db09184498981a47dc94331ab1
+             * height : 186
+             */
+
+            private int width;
+            private String uri;
+            private int height;
+            /**
+             * url : http://ic.snssdk.com/neihan/video/playback/?video_id=793b25db09184498981a47dc94331ab1&quality=480p&line=0&is_gif=1
+             */
+
+            private List<UrlListBean> url_list;
+
+            public int getWidth() {
+                return width;
+            }
+
+            public void setWidth(int width) {
+                this.width = width;
+            }
+
+            public String getUri() {
+                return uri;
+            }
+
+            public void setUri(String uri) {
+                this.uri = uri;
+            }
+
+            public int getHeight() {
+                return height;
+            }
+
+            public void setHeight(int height) {
+                this.height = height;
+            }
+
+            public List<UrlListBean> getUrl_list() {
+                return url_list;
+            }
+
+            public void setUrl_list(List<UrlListBean> url_list) {
+                this.url_list = url_list;
+            }
+
+            public static class UrlListBean {
+                private String url;
+
+                public String getUrl() {
+                    return url;
+                }
+
+                public void setUrl(String url) {
+                    this.url = url;
+                }
+            }
+        }
+
         @Override
         public String toString() {
             return "gifvideo{" +
