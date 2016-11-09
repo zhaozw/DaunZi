@@ -119,7 +119,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
                 Picasso.with(mContext).load(dataBean1.getGroup().getMiddlecover().getUrl_list().get(0).getUrl())
                         .placeholder(drawable)
                         .into(mPictureImageView);
-                mPictureImageView.setTag(dataBean1.getGroup().getMp4_url());
+                mPictureImageView.setTag(dataBean1.getGroup().getA480p_video().getUrl_list().get(0).getUrl());
             }
 
         }
