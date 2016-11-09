@@ -160,7 +160,8 @@ public class PictureModel {
                 @Override
                 public String toString() {
                     return "GroupBean{" +
-                            "user=" + user +
+                            "type=" + type +
+                            ", user=" + user +
                             ", text='" + text + '\'' +
                             ", comment_count=" + comment_count +
                             ", share_url='" + share_url + '\'' +
@@ -183,7 +184,8 @@ public class PictureModel {
                  * is_following : false
                  * is_pro_user : false
                  */
-
+                @SerializedName("type")
+                private int type;
                 private UserBean user;
                 private String text;
                 private int comment_count;
@@ -198,6 +200,14 @@ public class PictureModel {
 
                 public gifvideoBean getGifvideo() {
                     return gifvideo;
+                }
+
+                public int getType() {
+                    return type;
+                }
+
+                public void setType(int type) {
+                    this.type = type;
                 }
 
                 public void setGifvideo(gifvideoBean gifvideo) {

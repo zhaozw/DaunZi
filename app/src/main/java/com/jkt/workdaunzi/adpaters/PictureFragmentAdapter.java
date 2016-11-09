@@ -1,6 +1,10 @@
 package com.jkt.workdaunzi.adpaters;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,11 +29,18 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private List<PictureModel.DataBean.DataBean1> mDataBean1List;
+    private ImageView mImageView;
+    private Resources mResources;
+    private Bitmap mBitmap;
 
     public PictureFragmentAdapter(Context context, List<PictureModel.DataBean.DataBean1> listBeanList) {
         mContext = context;
         mDataBean1List = listBeanList;
         mLayoutInflater = LayoutInflater.from(context);
+        mImageView = new ImageView(context);
+        mResources = context.getResources();
+        mBitmap = BitmapFactory.decodeResource(mResources, R.drawable.place);
+
     }
 
     @Override
@@ -94,14 +105,24 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
                         .into(userIconView);
             }
             if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getGifvideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0) != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl())) {
-
+                int width = dataBean1.getGroup().getGifvideo().getA480PVideo().getWidth();
+                int height = dataBean1.getGroup().getGifvideo().getA480PVideo().getHeight();
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height,false);
+                mImageView.setImageBitmap(scaledBitmap);
+                Drawable drawable = mImageView.getDrawable();
                 Glide.with(mContext).load(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl())
                         .asBitmap()
+                        .placeholder(drawable)
                         .into(pictureImageView);
             } else if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddle_image() != null && dataBean1.getGroup().getMiddle_image().getUrl_list() != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null)) {
+                int width = dataBean1.getGroup().getMiddle_image().getWidth();
+                int height = dataBean1.getGroup().getMiddle_image().getHeight();
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height,false);
+                mImageView.setImageBitmap(scaledBitmap);
+                Drawable drawable = mImageView.getDrawable();
                 Glide.with(mContext).load(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl())
                         .asBitmap()
-                        .placeholder(R.drawable.placeone)
+                        .placeholder(drawable)
                         .into(pictureImageView);
             }
 
