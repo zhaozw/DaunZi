@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jkt.workdaunzi.R;
 import com.jkt.workdaunzi.models.RecommendModel;
 import com.squareup.picasso.Picasso;
@@ -127,14 +127,14 @@ public class RecommendFragmentAdapter extends RecyclerView.Adapter {
                 Glide.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url())
                         .into(userIconView);
             }
-            if (mPictureImageView != null && dataBean1.getGroup().getA480p_video() != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddle_cover() != null && dataBean1.getGroup().getMiddle_cover().getUrl_list() != null && dataBean1.getGroup().getMiddle_cover().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddle_cover().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddle_cover().getUrl_list().get(0).getUrl() != null)) {
+            if (mPictureImageView != null && dataBean1.getGroup().getA480p_video() != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddleCover() != null && dataBean1.getGroup().getMiddleCover().getUrl_list() != null && dataBean1.getGroup().getMiddleCover().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddleCover().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddleCover().getUrl_list().get(0).getUrl() != null)) {
                 mPictureImageView.setOnClickListener(this);
                 int width = dataBean1.getGroup().getA480p_video().getWidth();
                 int height = dataBean1.getGroup().getA480p_video().getHeight();
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
                 mOutImageView.setImageBitmap(scaledBitmap);
                 Drawable drawable = mOutImageView.getDrawable();
-                Picasso.with(mContext).load(dataBean1.getGroup().getMiddle_cover().getUrl_list().get(0).getUrl())
+                Picasso.with(mContext).load(dataBean1.getGroup().getMiddleCover().getUrl_list().get(0).getUrl())
                         .placeholder(drawable)
                         .into(mPictureImageView);
                 mPictureImageView.setTag(dataBean1.getGroup().getMp4_url());
@@ -227,28 +227,36 @@ public class RecommendFragmentAdapter extends RecyclerView.Adapter {
                         .into(userIconView);
             }
             if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getGifvideo() != null && dataBean1.getGroup().getGifvideo().getB480p_video() != null && dataBean1.getGroup().getGifvideo().getB480p_video().getUrl_list() != null && dataBean1.getGroup().getGifvideo().getB480p_video().getUrl_list().get(0) != null && dataBean1.getGroup().getGifvideo().getB480p_video().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getGifvideo().getB480p_video().getUrl_list().get(0).getUrl())) {
-                int width = dataBean1.getGroup().getGifvideo().getB480p_video().getWidth();
-                int height = dataBean1.getGroup().getGifvideo().getB480p_video().getHeight();
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
-                mOutImageView.setImageBitmap(scaledBitmap);
-                Drawable drawable = mOutImageView.getDrawable();
-                Glide.with(mContext).load(Uri.parse(dataBean1.getGroup().getGifvideo().getB480p_video().getUrl_list().get(0).getUrl()))
-                        .asGif()
-                        .placeholder(drawable)
-                        .into(pictureImageView);
-                return;
+                if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getLargeImage() != null && dataBean1.getGroup().getLargeImage().getUrl_list() != null && dataBean1.getGroup().getLargeImage().getUrl_list().get(0) != null && dataBean1.getGroup().getLargeImage().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getLargeImage().getUrl_list().get(0).getUrl() != null)) {
+                    if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddle_image() != null && dataBean1.getGroup().getMiddle_image().getUrl_list() != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null)) {
+                        int width = dataBean1.getGroup().getLargeImage().getWidth();
+                        int height = dataBean1.getGroup().getLargeImage().getHeight();
+                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
+                        mOutImageView.setImageBitmap(scaledBitmap);
+                        Drawable drawable = mOutImageView.getDrawable();
+                        Glide.with(mContext)
+                                .load(dataBean1.getGroup().getLargeImage().getUrl_list().get(0).getUrl())
+                                .asGif()
+                                .placeholder(drawable)
+                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                .into(pictureImageView);
+                        return;
+                    }
+                }
             } else if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddle_image() != null && dataBean1.getGroup().getMiddle_image().getUrl_list() != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null)) {
                 int width = dataBean1.getGroup().getMiddle_image().getWidth();
                 int height = dataBean1.getGroup().getMiddle_image().getHeight();
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
                 mOutImageView.setImageBitmap(scaledBitmap);
                 Drawable drawable = mOutImageView.getDrawable();
-                Glide.with(mContext).load(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl())
-                        .asBitmap()
+                Glide.with(mContext)
+                        .load(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl())
                         .placeholder(drawable)
+                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(pictureImageView);
                 return;
             }
+
 
         }
 

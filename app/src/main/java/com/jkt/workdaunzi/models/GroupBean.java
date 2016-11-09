@@ -9,13 +9,6 @@ import java.util.List;
  */
 
 public class GroupBean {
-    public A480p_video getA480p_video() {
-        return a480p_video;
-    }
-
-    public void setA480p_video(A480p_video a480p_video) {
-        this.a480p_video = a480p_video;
-    }
 
     @Override
     public String toString() {
@@ -32,9 +25,18 @@ public class GroupBean {
                 ", type=" + type +
                 ", bury_count=" + bury_count +
                 ", middle_image=" + middle_image +
+                ", largeImage=" + largeImage +
                 ", gifvideo=" + gifvideo +
                 ", text='" + text + '\'' +
                 '}';
+    }
+
+    public A480p_video getA480p_video() {
+        return a480p_video;
+    }
+
+    public void setA480p_video(A480p_video a480p_video) {
+        this.a480p_video = a480p_video;
     }
 
     /**
@@ -109,14 +111,6 @@ public class GroupBean {
     private int digg_count;
     @SerializedName("480p_video")
     private A480p_video a480p_video;
-
-    public MiddleCoverBean getMiddle_cover() {
-        return middleCover;
-    }
-
-    public void setMiddle_cover(MiddleCoverBean large_cover) {
-        this.middleCover = large_cover;
-    }
 
 
     public static class A480p_video {
@@ -219,11 +213,28 @@ public class GroupBean {
     private int bury_count;
     @SerializedName("middle_image")
     private middle_image middle_image;
+    @SerializedName("large_image")
+    private large_image largeImage;
     @SerializedName("gifvideo")
     private gifvideo gifvideo;
     @SerializedName("text")
     private String text;
 
+    public MiddleCoverBean getMiddleCover() {
+        return middleCover;
+    }
+
+    public void setMiddleCover(MiddleCoverBean middleCover) {
+        this.middleCover = middleCover;
+    }
+
+    public large_image getLargeImage() {
+        return largeImage;
+    }
+
+    public void setLargeImage(large_image largeImage) {
+        this.largeImage = largeImage;
+    }
 
     public middle_image getMiddle_image() {
         return middle_image;
@@ -409,6 +420,72 @@ public class GroupBean {
                     ", url_list=" + url_list +
                     '}';
         }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public void setWidth(int width) {
+            this.width = width;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public void setHeight(int height) {
+            this.height = height;
+        }
+
+        /**
+         * url : http://p1.pstatp.com/w440/ecb0001eb6795eaec7b.webp
+         */
+        @SerializedName("url_list")
+        private List<UrlListBean> url_list;
+
+        public List<UrlListBean> getUrl_list() {
+            return url_list;
+        }
+
+        public void setUrl_list(List<UrlListBean> url_list) {
+            this.url_list = url_list;
+        }
+
+        public static class UrlListBean {
+            @Override
+            public String toString() {
+                return "UrlListBean{" +
+                        "url='" + url + '\'' +
+                        '}';
+            }
+
+            @SerializedName("url")
+            private String url;
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+        }
+    }
+
+    public static class large_image {
+        @Override
+        public String toString() {
+            return "large_image{" +
+                    "width=" + width +
+                    ", height=" + height +
+                    ", url_list=" + url_list +
+                    '}';
+        }
+
+        @SerializedName("width")
+        private int width;
+        @SerializedName("height")
+        private int height;
 
         public int getWidth() {
             return width;

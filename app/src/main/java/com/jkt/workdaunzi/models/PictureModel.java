@@ -157,21 +157,6 @@ public class PictureModel {
             }
 
             public static class GroupBean {
-                @Override
-                public String toString() {
-                    return "GroupBean{" +
-                            "type=" + type +
-                            ", user=" + user +
-                            ", text='" + text + '\'' +
-                            ", comment_count=" + comment_count +
-                            ", share_url='" + share_url + '\'' +
-                            ", share_count=" + share_count +
-                            ", bury_count=" + bury_count +
-                            ", digg_count=" + digg_count +
-                            ", middle_image=" + middle_image +
-                            ", gifvideo=" + gifvideo +
-                            '}';
-                }
 
                 /**
                  * user_id : 4565763433
@@ -195,6 +180,108 @@ public class PictureModel {
                 private int digg_count;
                 @SerializedName("middle_image")
                 private Middle_imageBean middle_image;
+                @SerializedName("large_image")
+                private Large_imageBean large_image;
+
+                @Override
+                public String toString() {
+                    return "GroupBean{" +
+                            "type=" + type +
+                            ", user=" + user +
+                            ", text='" + text + '\'' +
+                            ", comment_count=" + comment_count +
+                            ", share_url='" + share_url + '\'' +
+                            ", share_count=" + share_count +
+                            ", bury_count=" + bury_count +
+                            ", digg_count=" + digg_count +
+                            ", middle_image=" + middle_image +
+                            ", large_image=" + large_image +
+                            ", gifvideo=" + gifvideo +
+                            '}';
+                }
+
+                public Large_imageBean getLarge_image() {
+                    return large_image;
+                }
+
+                public void setLarge_image(Large_imageBean large_image) {
+                    this.large_image = large_image;
+                }
+
+                public static class Large_imageBean {
+                    @Override
+                    public String toString() {
+                        return "Large_imageBean{" +
+                                "width=" + width +
+                                ", uri='" + uri + '\'' +
+                                ", height=" + height +
+                                ", url_list=" + url_list +
+                                '}';
+                    }
+
+                    /**
+                     * width : 200
+                     * r_height : 300
+                     * r_width : 200
+                     * url_list : [{"url":"http://p2.pstatp.com/large/10f50000e20615b05ece"},{"url":"http://pb3.pstatp.com/large/10f50000e20615b05ece"},{"url":"http://pb3.pstatp.com/large/10f50000e20615b05ece"}]
+                     * uri : large/10f50000e20615b05ece
+                     * height : 300
+                     */
+
+                    private int width;
+                    private String uri;
+                    private int height;
+                    /**
+                     * url : http://p2.pstatp.com/large/10f50000e20615b05ece
+                     */
+
+                    private List<UrlListBean> url_list;
+
+                    public int getWidth() {
+                        return width;
+                    }
+
+                    public void setWidth(int width) {
+                        this.width = width;
+                    }
+
+                    public String getUri() {
+                        return uri;
+                    }
+
+                    public void setUri(String uri) {
+                        this.uri = uri;
+                    }
+
+                    public int getHeight() {
+                        return height;
+                    }
+
+                    public void setHeight(int height) {
+                        this.height = height;
+                    }
+
+                    public List<UrlListBean> getUrl_list() {
+                        return url_list;
+                    }
+
+                    public void setUrl_list(List<UrlListBean> url_list) {
+                        this.url_list = url_list;
+                    }
+
+                    public static class UrlListBean {
+                        private String url;
+
+                        public String getUrl() {
+                            return url;
+                        }
+
+                        public void setUrl(String url) {
+                            this.url = url;
+                        }
+                    }
+                }
+
                 @SerializedName("gifvideo")
                 private gifvideoBean gifvideo;
 
