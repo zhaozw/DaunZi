@@ -167,7 +167,7 @@ public class PictureModel {
                             ", share_count=" + share_count +
                             ", bury_count=" + bury_count +
                             ", digg_count=" + digg_count +
-                            ", large_image=" + large_image +
+                            ", middle_image=" + middle_image +
                             ", gifvideo=" + gifvideo +
                             '}';
                 }
@@ -191,8 +191,8 @@ public class PictureModel {
                 private int share_count;
                 private int bury_count;
                 private int digg_count;
-                @SerializedName("large_image")
-                private large_imageBean large_image;
+                @SerializedName("middle_image")
+                private Middle_imageBean middle_image;
                 @SerializedName("gifvideo")
                 private gifvideoBean gifvideo;
 
@@ -204,12 +204,12 @@ public class PictureModel {
                     this.gifvideo = gifvideo;
                 }
 
-                public large_imageBean getLarge_image() {
-                    return large_image;
+                public Middle_imageBean getMiddle_image() {
+                    return middle_image;
                 }
 
-                public void setLarge_image(large_imageBean large_image) {
-                    this.large_image = large_image;
+                public void setMiddle_image(Middle_imageBean middle_image) {
+                    this.middle_image = middle_image;
                 }
 
                 public UserBean getUser() {
@@ -293,6 +293,8 @@ public class PictureModel {
                         public String toString() {
                             return "a480PVideoBean{" +
                                     "url_list=" + url_list +
+                                    ", width=" + width +
+                                    ", height=" + height +
                                     '}';
                         }
 
@@ -301,6 +303,26 @@ public class PictureModel {
                          */
                         @SerializedName("url_list")
                         private List<UrlListBean> url_list;
+                        @SerializedName("width")
+                        private int width;
+                        @SerializedName("height")
+                        private int height;
+
+                        public int getWidth() {
+                            return width;
+                        }
+
+                        public void setWidth(int width) {
+                            this.width = width;
+                        }
+
+                        public int getHeight() {
+                            return height;
+                        }
+
+                        public void setHeight(int height) {
+                            this.height = height;
+                        }
 
                         public List<UrlListBean> getUrl_list() {
                             return url_list;
@@ -332,12 +354,30 @@ public class PictureModel {
                     }
                 }
 
-                public static class large_imageBean {
+                public static class Middle_imageBean {
                     @Override
                     public String toString() {
                         return "large_imageBean{" +
                                 "url_list=" + url_list +
+                                ", width=" + width +
+                                ", height=" + height +
                                 '}';
+                    }
+
+                    public int getWidth() {
+                        return width;
+                    }
+
+                    public void setWidth(int width) {
+                        this.width = width;
+                    }
+
+                    public int getHeight() {
+                        return height;
+                    }
+
+                    public void setHeight(int height) {
+                        this.height = height;
                     }
 
                     /**
@@ -345,6 +385,10 @@ public class PictureModel {
                      */
                     @SerializedName("url_list")
                     private List<UrlListBean> url_list;
+                    @SerializedName("width")
+                    private int width;
+                    @SerializedName("height")
+                    private int height;
 
                     public List<UrlListBean> getUrl_list() {
                         return url_list;

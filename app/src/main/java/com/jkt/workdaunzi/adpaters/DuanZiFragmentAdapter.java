@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jkt.workdaunzi.R;
 import com.jkt.workdaunzi.models.DuanziModel;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -86,7 +86,7 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
                 contentTextView.setText(dataBean1.getGroup().getText());
             }
             if (userIconView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null && dataBean1.getGroup().getUser().getAvatar_url() != null && !"".equals(dataBean1.getGroup().getUser().getAvatar_url())) {
-                Picasso.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url()).fit().into(userIconView);
+                Glide.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url()).into(userIconView);
             }
         }
 

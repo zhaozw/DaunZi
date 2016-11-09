@@ -39,19 +39,19 @@
             android:textColor="#000"
             android:textSize="18sp"/>
 
-        <ImageView
-            android:id="@+id/item_picture_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:adjustViewBounds="true"
-            android:maxHeight="700dp"
-            />
+
+            <ImageView
+                android:id="@+id/item_picture_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:layout_marginTop="15dp"
+                />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-
         android:layout_height="10dp"
         android:layout_marginTop="20dp"
         android:background="#44CDC0B0"></View>
