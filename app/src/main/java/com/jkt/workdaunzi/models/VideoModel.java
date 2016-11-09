@@ -176,10 +176,11 @@ public class VideoModel {
                 @Override
                 public String toString() {
                     return "GroupBean{" +
-                            "mp4_url='" + mp4_url + '\'' +
+                            "a480p_video=" + a480p_video +
+                            ", mp4_url='" + mp4_url + '\'' +
                             ", text='" + text + '\'' +
                             ", digg_count=" + digg_count +
-                            ", large_cover=" + large_cover +
+                            ", middlecover=" + middlecover +
                             ", user=" + user +
                             ", share_url='" + share_url + '\'' +
                             ", comment_count=" + comment_count +
@@ -187,6 +188,89 @@ public class VideoModel {
                             ", type=" + type +
                             ", bury_count=" + bury_count +
                             '}';
+                }
+
+                @SerializedName("480p_video")
+                private A480p_video a480p_video;
+
+                public A480p_video getA480p_video() {
+                    return a480p_video;
+                }
+
+                public void setA480p_video(A480p_video a480p_video) {
+                    this.a480p_video = a480p_video;
+                }
+
+                public static class A480p_video {
+                    @Override
+                    public String toString() {
+                        return "A480p_video{" +
+                                "width=" + width +
+                                ", uri='" + uri + '\'' +
+                                ", height=" + height +
+                                ", url_list=" + url_list +
+                                '}';
+                    }
+
+                    /**
+                     * width : 640
+                     * url_list : [{"url":"http://ic.snssdk.com/neihan/video/playback/?video_id=28c82620ee4645cba7e8f58e84f6b943&quality=480p&line=0&is_gif=0"},{"url":"http://ic.snssdk.com/neihan/video/playback/?video_id=28c82620ee4645cba7e8f58e84f6b943&quality=480p&line=1&is_gif=0"}]
+                     * uri : 480p/28c82620ee4645cba7e8f58e84f6b943
+                     * height : 360
+                     */
+
+                    private int width;
+                    private String uri;
+                    private int height;
+                    /**
+                     * url : http://ic.snssdk.com/neihan/video/playback/?video_id=28c82620ee4645cba7e8f58e84f6b943&quality=480p&line=0&is_gif=0
+                     */
+
+                    private List<UrlListBean> url_list;
+
+                    public int getWidth() {
+                        return width;
+                    }
+
+                    public void setWidth(int width) {
+                        this.width = width;
+                    }
+
+                    public String getUri() {
+                        return uri;
+                    }
+
+                    public void setUri(String uri) {
+                        this.uri = uri;
+                    }
+
+                    public int getHeight() {
+                        return height;
+                    }
+
+                    public void setHeight(int height) {
+                        this.height = height;
+                    }
+
+                    public List<UrlListBean> getUrl_list() {
+                        return url_list;
+                    }
+
+                    public void setUrl_list(List<UrlListBean> url_list) {
+                        this.url_list = url_list;
+                    }
+
+                    public static class UrlListBean {
+                        private String url;
+
+                        public String getUrl() {
+                            return url;
+                        }
+
+                        public void setUrl(String url) {
+                            this.url = url;
+                        }
+                    }
                 }
 
                 private String mp4_url;
@@ -197,7 +281,17 @@ public class VideoModel {
                  * uri : large/f3d0009604feef259ce
                  */
 
-                private LargeCoverBean large_cover;
+                @SerializedName("medium_cover")
+                private middleCoverBean middlecover;
+
+                public middleCoverBean getMiddlecover() {
+                    return middlecover;
+                }
+
+                public void setMiddlecover(middleCoverBean middlecover) {
+                    this.middlecover = middlecover;
+                }
+
                 /**
                  * user_id : 6375513795
                  * name : Redwing86722819
@@ -241,12 +335,12 @@ public class VideoModel {
                     this.digg_count = digg_count;
                 }
 
-                public LargeCoverBean getLarge_cover() {
-                    return large_cover;
+                public middleCoverBean getLarge_cover() {
+                    return middlecover;
                 }
 
-                public void setLarge_cover(LargeCoverBean large_cover) {
-                    this.large_cover = large_cover;
+                public void setLarge_cover(middleCoverBean middlecover) {
+                    this.middlecover = middlecover;
                 }
 
                 public UserBean getUser() {
@@ -297,19 +391,30 @@ public class VideoModel {
                     this.bury_count = bury_count;
                 }
 
-                public static class LargeCoverBean {
+                public static class middleCoverBean {
                     @Override
                     public String toString() {
-                        return "LargeCoverBean{" +
+                        return "middleCoverBean{" +
                                 "url_list=" + url_list +
+                                ", uri='" + uri + '\'' +
                                 '}';
                     }
 
                     /**
                      * url : http://p9.pstatp.com/large/f3d0009604feef259ce.webp
                      */
-
+                    @SerializedName("url_list")
                     private List<UrlListBean> url_list;
+                    @SerializedName("uri")
+                    private String uri;
+
+                    public String getUri() {
+                        return uri;
+                    }
+
+                    public void setUri(String uri) {
+                        this.uri = uri;
+                    }
 
                     public List<UrlListBean> getUrl_list() {
                         return url_list;
@@ -327,6 +432,7 @@ public class VideoModel {
                                     '}';
                         }
 
+                        @SerializedName("url")
                         private String url;
 
                         public String getUrl() {

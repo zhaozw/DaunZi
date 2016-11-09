@@ -183,7 +183,7 @@ public class PictureFragment extends Fragment implements INetView, IJsonView, Sw
             for (int i = 0; i < listBeanList.size(); i++) {
                 if (listBeanList.get(i).getType() == 1) {
                     if (listBeanList.get(i).getGroup() != null && listBeanList.get(i).getGroup().getType() == 3) {
-                        if (listBeanList.get(i).getGroup().getMiddle_image() != null && listBeanList.get(i).getGroup().getMiddle_image().getHeight() <= 800) {
+                        if (listBeanList.get(i).getGroup().getMiddle_image() != null && listBeanList.get(i).getGroup().getMiddle_image().getHeight() <= 1200) {
                             mDataBean1List.add(listBeanList.get(i));
                         }
                     }

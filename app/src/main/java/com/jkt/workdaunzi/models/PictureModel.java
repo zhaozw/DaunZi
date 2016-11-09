@@ -280,15 +280,27 @@ public class PictureModel {
                 }
 
                 public static class gifvideoBean {
+
                     @Override
                     public String toString() {
                         return "gifvideoBean{" +
                                 "a480PVideo=" + a480PVideo +
+                                ", cover_image_uri='" + cover_image_uri + '\'' +
                                 '}';
                     }
 
                     @SerializedName("480p_video")
                     private a480PVideoBean a480PVideo;
+                    @SerializedName("cover_image_uri")
+                    private String cover_image_uri;
+
+                    public String getCover_image_uri() {
+                        return cover_image_uri;
+                    }
+
+                    public void setCover_image_uri(String cover_image_uri) {
+                        this.cover_image_uri = cover_image_uri;
+                    }
 
                     public a480PVideoBean getA480PVideo() {
                         return a480PVideo;
@@ -305,6 +317,7 @@ public class PictureModel {
                                     "url_list=" + url_list +
                                     ", width=" + width +
                                     ", height=" + height +
+                                    ", uri=" + uri +
                                     '}';
                         }
 
@@ -317,6 +330,16 @@ public class PictureModel {
                         private int width;
                         @SerializedName("height")
                         private int height;
+                        @SerializedName("uri")
+                        private String uri;
+
+                        public String getUri() {
+                            return uri;
+                        }
+
+                        public void setUri(String uri) {
+                            this.uri = uri;
+                        }
 
                         public int getWidth() {
                             return width;
