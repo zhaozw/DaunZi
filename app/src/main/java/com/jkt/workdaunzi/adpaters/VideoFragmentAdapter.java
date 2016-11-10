@@ -105,6 +105,12 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
 
             TextView userNameView = (TextView) itemView.findViewById(R.id.item_video_name);
             TextView contentTextView = (TextView) customFindViewByID(R.id.item_video_text);
+            TextView diggTextView = (TextView) customFindViewByID(R.id.item_video_diggText);
+            TextView buryTextView = (TextView) customFindViewByID(R.id.item_video_buryText);
+            TextView shareTextView = (TextView) customFindViewByID(R.id.item_video_shareText);
+            ImageView diggImageView = (ImageView) customFindViewByID(R.id.item_video_diggImage);
+            ImageView buryImageView = (ImageView) customFindViewByID(R.id.item_video_buryImage);
+            ImageView shareImageView = (ImageView) customFindViewByID(R.id.item_video_shareImage);
             mVideoView = (VideoView) customFindViewByID(R.id.item_video_video);
             ImageView userIconView = (ImageView) customFindViewByID(R.id.item_video_icon);
             mPictureImageView = (ImageView) customFindViewByID(R.id.item_video_image);
@@ -123,6 +129,15 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
             if (userIconView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null && dataBean1.getGroup().getUser().getAvatar_url() != null && !"".equals(dataBean1.getGroup().getUser().getAvatar_url())) {
                 Glide.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url())
                         .into(userIconView);
+            }
+            if (diggTextView != null && dataBean1.getGroup() != null) {
+                diggTextView.setText(String.valueOf(dataBean1.getGroup().getDigg_count()));
+            }
+            if (buryTextView != null && dataBean1.getGroup() != null) {
+                buryTextView.setText(String.valueOf(dataBean1.getGroup().getBury_count()));
+            }
+            if (shareTextView != null && dataBean1.getGroup() != null) {
+                shareTextView.setText(String.valueOf(dataBean1.getGroup().getShare_count()));
             }
             if (mPictureImageView != null && dataBean1.getGroup().getA480p_video() != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddlecover() != null && dataBean1.getGroup().getMiddlecover().getUrl_list() != null && dataBean1.getGroup().getMiddlecover().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddlecover().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddlecover().getUrl_list().get(0).getUrl() != null)) {
                 mPictureImageView.setOnClickListener(this);

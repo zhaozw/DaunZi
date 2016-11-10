@@ -89,8 +89,13 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
             TextView userNameView = (TextView) customFindViewByID(R.id.item_picture_name);
             TextView contentTextView = (TextView) customFindViewByID(R.id.item_picture_text);
             ImageView userIconView = (ImageView) customFindViewByID(R.id.item_picture_icon);
-            final ImageView gifImageView = (ImageView) customFindViewByID(R.id.item_picture_gifImage);
-            final ImageView pictureImageView = (ImageView) customFindViewByID(R.id.item_picture_image);
+            TextView diggTextView = (TextView) customFindViewByID(R.id.item_picture_diggText);
+            TextView buryTextView = (TextView) customFindViewByID(R.id.item_picture_buryText);
+            TextView shareTextView = (TextView) customFindViewByID(R.id.item_picture_shareText);
+            ImageView diggImageView = (ImageView) customFindViewByID(R.id.item_picture_diggImage);
+            ImageView buryImageView = (ImageView) customFindViewByID(R.id.item_picture_buryImage);
+            ImageView shareImageView = (ImageView) customFindViewByID(R.id.item_picture_shareImage);
+            ImageView pictureImageView = (ImageView) customFindViewByID(R.id.item_picture_image);
             if (userNameView != null && dataBean1 != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null) {
                 userNameView.setText(dataBean1.getGroup().getUser().getName());
             }
@@ -103,6 +108,15 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
             if (userIconView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null && dataBean1.getGroup().getUser().getAvatar_url() != null && !"".equals(dataBean1.getGroup().getUser().getAvatar_url())) {
                 Glide.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url())
                         .into(userIconView);
+            }
+            if (diggTextView != null && dataBean1.getGroup() != null) {
+                diggTextView.setText(String.valueOf(dataBean1.getGroup().getDigg_count()));
+            }
+            if (buryTextView != null && dataBean1.getGroup() != null) {
+                buryTextView.setText(String.valueOf(dataBean1.getGroup().getBury_count()));
+            }
+            if (shareTextView != null && dataBean1.getGroup() != null) {
+                shareTextView.setText(String.valueOf(dataBean1.getGroup().getShare_count()));
             }
             if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getGifvideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0) != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl())) {
                 if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getLarge_image() != null && dataBean1.getGroup().getLarge_image().getUrl_list() != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0) != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null)) {
