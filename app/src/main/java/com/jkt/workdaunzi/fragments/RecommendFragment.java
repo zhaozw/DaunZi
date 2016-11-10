@@ -70,7 +70,7 @@ public class RecommendFragment extends Fragment implements INetView, IJsonView, 
     private void initNet() {
         mPage = 1;
         mRefreshLayout.setRefreshing(true);
-        String url="http://is.snssdk.com/neihan/stream/mix/v1/?mpic=1&webp=1&essence=1&content_type=-101&message_cursor=-1&am_longitude=116.369552&am_latitude=40.037426&am_city=%E5%8C%97%E4%BA%AC%E5%B8%82&am_loc_time=1478509009013&count=30&min_time=1478360718&screen_width=1152&iid=6178987393&device_id=6092032765&ac=wifi&channel=meizu&aid=7&app_name=joke_essay&version_code=570&version_name=5.7.0&device_platform=android&ssmix=a&device_type=MX4&device_brand=Meizu&os_api=22&os_version=5.1&uuid=865479029646411&openudid=aad381b0192fcbca&manifest_version_code=570&resolution=1152*1920&dpi=480&update_version_code=5701";
+        String url = "http://is.snssdk.com/neihan/stream/mix/v1/?mpic=1&webp=1&essence=1&content_type=-101&message_cursor=-1&am_longitude=116.369552&am_latitude=40.037426&am_city=%E5%8C%97%E4%BA%AC%E5%B8%82&am_loc_time=1478509009013&count=30&min_time=1478360718&screen_width=1152&iid=6178987393&device_id=6092032765&ac=wifi&channel=meizu&aid=7&app_name=joke_essay&version_code=570&version_name=5.7.0&device_platform=android&ssmix=a&device_type=MX4&device_brand=Meizu&os_api=22&os_version=5.1&uuid=865479029646411&openudid=aad381b0192fcbca&manifest_version_code=570&resolution=1152*1920&dpi=480&update_version_code=5701";
         new NetPresenter(this, "RecommendModel").getNetByteByOkHttp3(url,
                 "GET", null, null, null);
     }
@@ -95,6 +95,9 @@ public class RecommendFragment extends Fragment implements INetView, IJsonView, 
                         if (mLastVisibleItem == mRecommendFragmentAdapter.getItemCount() - 1 && !mRefreshing) {
                             initMoreNet();
                         }
+                        if (mRecommendFragmentAdapter.getVideoViewHolder() != null) {
+                            mRecommendFragmentAdapter.getVideoViewHolder().videoReset();
+                        }
                     }
                 }
 
@@ -104,7 +107,7 @@ public class RecommendFragment extends Fragment implements INetView, IJsonView, 
     private void initMoreNet() {
         mRefreshing = true;
         mPage++;
-        String url="http://is.snssdk.com/neihan/stream/mix/v1/?mpic=1&webp=1&essence=1&content_type=-101&message_cursor=-1&am_longitude=116.369552&am_latitude=40.037426&am_city=%E5%8C%97%E4%BA%AC%E5%B8%82&am_loc_time=1478509009013&count=30&min_time=1478360718&screen_width=1152&iid=6178987393&device_id=6092032765&ac=wifi&channel=meizu&aid=7&app_name=joke_essay&version_code=570&version_name=5.7.0&device_platform=android&ssmix=a&device_type=MX4&device_brand=Meizu&os_api=22&os_version=5.1&uuid=865479029646411&openudid=aad381b0192fcbca&manifest_version_code=570&resolution=1152*1920&dpi=480&update_version_code=5701";
+        String url = "http://is.snssdk.com/neihan/stream/mix/v1/?mpic=1&webp=1&essence=1&content_type=-101&message_cursor=-1&am_longitude=116.369552&am_latitude=40.037426&am_city=%E5%8C%97%E4%BA%AC%E5%B8%82&am_loc_time=1478509009013&count=30&min_time=1478360718&screen_width=1152&iid=6178987393&device_id=6092032765&ac=wifi&channel=meizu&aid=7&app_name=joke_essay&version_code=570&version_name=5.7.0&device_platform=android&ssmix=a&device_type=MX4&device_brand=Meizu&os_api=22&os_version=5.1&uuid=865479029646411&openudid=aad381b0192fcbca&manifest_version_code=570&resolution=1152*1920&dpi=480&update_version_code=5701";
         new NetPresenter(this, "RecommendModel").getNetByteByOkHttp3(url,
                 "GET", null, null, null);
     }
@@ -182,8 +185,10 @@ public class RecommendFragment extends Fragment implements INetView, IJsonView, 
             }
             for (int i = 0; i < listBeanList.size(); i++) {
                 if (listBeanList.get(i).getType() == 1) {
-                    if (listBeanList.get(i).getGroup() != null &&( listBeanList.get(i).getGroup().getType() == 2||listBeanList.get(i).getGroup().getType() == 3)) {
-                        mDataBean1List.add(listBeanList.get(i));
+                    if (listBeanList.get(i).getGroup() != null && (listBeanList.get(i).getGroup().getType() == 2 || listBeanList.get(i).getGroup().getType() == 3)) {
+                        if (listBeanList.get(i).getGroup().getA480p_video() == null || (listBeanList.get(i).getGroup().getA480p_video() != null && listBeanList.get(i).getGroup().getA480p_video().getHeight() <= 400)) {
+                            mDataBean1List.add(listBeanList.get(i));
+                        }
                     }
                 }
             }

@@ -35,6 +35,13 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
     private List<VideoModel.DataBean.DataBean1> mDataBean1List;
     private ImageView mOutImageView;
     private Bitmap mBitmap;
+    private int mPlayPosition;
+    private VideoViewHolder mVideoViewHolder;
+
+    public VideoViewHolder getVideoViewHolder() {
+        return mVideoViewHolder;
+    }
+
 
     public VideoFragmentAdapter(Context context, List<VideoModel.DataBean.DataBean1> listBeanList) {
         mContext = context;
@@ -59,14 +66,14 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
             return new FoorViewHolder(inflate);
         }
         View inflate = mLayoutInflater.inflate(R.layout.item_video, parent, false);
-        return new DunZiViewHolder(inflate);
+        return new VideoViewHolder(inflate);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (position < mDataBean1List.size()) {
-            DunZiViewHolder hotViewHolder = (DunZiViewHolder) holder;
-            hotViewHolder.bindView(mDataBean1List.get(position));
+            VideoViewHolder hotViewHolder = (VideoViewHolder) holder;
+            hotViewHolder.bindView(mDataBean1List.get(position), position);
         }
         if (position == mDataBean1List.size()) {
             FoorViewHolder foorViewHolder = (FoorViewHolder) holder;
@@ -79,7 +86,8 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         return mDataBean1List.size() + 1;
     }
 
-    public class DunZiViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
+    public class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
+        private int mPosition;
         private final SparseArrayCompat<View> mSparseArrayCompat;
         private VideoView mVideoView;
         private ImageView mPictureImageView;
@@ -87,13 +95,15 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         private ProgressBar mProgressBar;
         private MediaController mMediaController;
 
-        public DunZiViewHolder(View itemView) {
+        public VideoViewHolder(View itemView) {
             super(itemView);
             mSparseArrayCompat = new SparseArrayCompat<>();
+            mMediaController = new MediaController(mContext);
         }
 
-        void bindView(VideoModel.DataBean.DataBean1 dataBean1) {
-            TextView userNameView = (TextView) customFindViewByID(R.id.item_video_name);
+        void bindView(VideoModel.DataBean.DataBean1 dataBean1, int position) {
+
+            TextView userNameView = (TextView) itemView.findViewById(R.id.item_video_name);
             TextView contentTextView = (TextView) customFindViewByID(R.id.item_video_text);
             mVideoView = (VideoView) customFindViewByID(R.id.item_video_video);
             ImageView userIconView = (ImageView) customFindViewByID(R.id.item_video_icon);
@@ -143,12 +153,13 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
             if (v.getTag() != null && v.getTag() instanceof String) {
+                mVideoViewHolder = this;
                 String tag = (String) v.getTag();
                 mIndicatorImageView.setVisibility(View.INVISIBLE);
                 mProgressBar.setVisibility(View.VISIBLE);
+                mVideoView.setMediaController(mMediaController);
                 mVideoView.setVisibility(View.VISIBLE);
                 mVideoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mPictureImageView.getHeight()));
-                mVideoView.setMediaController(mMediaController);
                 mVideoView.setVideoPath(tag);
                 mVideoView.setOnCompletionListener(this);
                 mVideoView.setOnErrorListener(this);
@@ -156,12 +167,14 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
                 mVideoView.start();
             }
         }
+
         @Override
         public void onPrepared(MediaPlayer mp) {
             mProgressBar.setVisibility(View.INVISIBLE);
             mPictureImageView.setVisibility(View.INVISIBLE);
             mVideoView.setVisibility(View.VISIBLE);
         }
+
         @Override
         public boolean onError(MediaPlayer mp, int what, int extra) {
             mPictureImageView.setVisibility(View.VISIBLE);
@@ -171,14 +184,18 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
             mVideoView.stopPlayback();
             return false;
         }
+
         @Override
         public void onCompletion(MediaPlayer mp) {
+            videoReset();
+        }
+
+        public void videoReset() {
             mPictureImageView.setVisibility(View.VISIBLE);
             mIndicatorImageView.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.INVISIBLE);
             mVideoView.setVisibility(View.INVISIBLE);
             mVideoView.stopPlayback();
-
         }
     }
 
@@ -206,5 +223,6 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
             }
         }
     }
+
 }
 

@@ -40,7 +40,7 @@ public class VideoFragment extends Fragment implements INetView, IJsonView, Swip
     private File mFile;
     private int mLastVisibleItem;
     private MyLinearLayoutManager mLayoutManager;
-    private VideoFragmentAdapter mPictureFragmentAdapter;
+    private VideoFragmentAdapter mVideoFragmentAdapter;
     private int mPage = 1;
     private List<VideoModel.DataBean.DataBean1> mDataBean1List;
     private boolean mRefreshing;
@@ -63,14 +63,14 @@ public class VideoFragment extends Fragment implements INetView, IJsonView, Swip
 
     private void initRecyclerViewAdapter() {
         mDataBean1List = new ArrayList<>();
-        mPictureFragmentAdapter = new VideoFragmentAdapter(getActivity(), mDataBean1List);
-        mRecyclerView.setAdapter(mPictureFragmentAdapter);
+        mVideoFragmentAdapter = new VideoFragmentAdapter(getActivity(), mDataBean1List);
+        mRecyclerView.setAdapter(mVideoFragmentAdapter);
     }
 
     private void initNet() {
         mPage = 1;
         mRefreshLayout.setRefreshing(true);
-        String url="http://is.snssdk.com/neihan/stream/mix/v1/?mpic=1&webp=1&essence=1&content_type=-104&message_cursor=-1&am_longitude=116.369552&am_latitude=40.037426&am_city=%E5%8C%97%E4%BA%AC%E5%B8%82&am_loc_time=1478509009013&count=30&min_time=1478510072&screen_width=1152&iid=6178987393&device_id=6092032765&ac=wifi&channel=meizu&aid=7&app_name=joke_essay&version_code=570&version_name=5.7.0&device_platform=android&ssmix=a&device_type=MX4&device_brand=Meizu&os_api=22&os_version=5.1&uuid=865479029646411&openudid=aad381b0192fcbca&manifest_version_code=570&resolution=1152*1920&dpi=480&update_version_code=5701";
+        String url = "http://is.snssdk.com/neihan/stream/mix/v1/?mpic=1&webp=1&essence=1&content_type=-104&message_cursor=-1&am_longitude=116.369552&am_latitude=40.037426&am_city=%E5%8C%97%E4%BA%AC%E5%B8%82&am_loc_time=1478509009013&count=30&min_time=1478510072&screen_width=1152&iid=6178987393&device_id=6092032765&ac=wifi&channel=meizu&aid=7&app_name=joke_essay&version_code=570&version_name=5.7.0&device_platform=android&ssmix=a&device_type=MX4&device_brand=Meizu&os_api=22&os_version=5.1&uuid=865479029646411&openudid=aad381b0192fcbca&manifest_version_code=570&resolution=1152*1920&dpi=480&update_version_code=5701";
         new NetPresenter(this, "VideoModel").getNetByteByOkHttp3(url,
                 "GET", null, null, null);
     }
@@ -80,20 +80,14 @@ public class VideoFragment extends Fragment implements INetView, IJsonView, Swip
         mRecyclerView.addOnScrollListener(
                 new RecyclerView.OnScrollListener() {
                     @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                        mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-                        if (mLastVisibleItem == mPictureFragmentAdapter.getItemCount() - 1 && !mRefreshing) {
-                            initMoreNet();
-                        }
-                    }
-
-                    @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
                         mLastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
-                        if (mLastVisibleItem == mPictureFragmentAdapter.getItemCount() - 1 && !mRefreshing) {
+                        if (mLastVisibleItem == mVideoFragmentAdapter.getItemCount() - 1 && !mRefreshing) {
                             initMoreNet();
+                        }
+                        if (mVideoFragmentAdapter.getVideoViewHolder() != null) {
+                            mVideoFragmentAdapter.getVideoViewHolder().videoReset();
                         }
                     }
                 }
@@ -101,10 +95,15 @@ public class VideoFragment extends Fragment implements INetView, IJsonView, Swip
         );
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
     private void initMoreNet() {
         mRefreshing = true;
         mPage++;
-        String url="http://is.snssdk.com/neihan/stream/mix/v1/?mpic=1&webp=1&essence=1&content_type=-104&message_cursor=-1&am_longitude=116.369552&am_latitude=40.037426&am_city=%E5%8C%97%E4%BA%AC%E5%B8%82&am_loc_time=1478509009013&count=30&min_time=1478510072&screen_width=1152&iid=6178987393&device_id=6092032765&ac=wifi&channel=meizu&aid=7&app_name=joke_essay&version_code=570&version_name=5.7.0&device_platform=android&ssmix=a&device_type=MX4&device_brand=Meizu&os_api=22&os_version=5.1&uuid=865479029646411&openudid=aad381b0192fcbca&manifest_version_code=570&resolution=1152*1920&dpi=480&update_version_code=5701";
+        String url = "http://is.snssdk.com/neihan/stream/mix/v1/?mpic=1&webp=1&essence=1&content_type=-104&message_cursor=-1&am_longitude=116.369552&am_latitude=40.037426&am_city=%E5%8C%97%E4%BA%AC%E5%B8%82&am_loc_time=1478509009013&count=30&min_time=1478510072&screen_width=1152&iid=6178987393&device_id=6092032765&ac=wifi&channel=meizu&aid=7&app_name=joke_essay&version_code=570&version_name=5.7.0&device_platform=android&ssmix=a&device_type=MX4&device_brand=Meizu&os_api=22&os_version=5.1&uuid=865479029646411&openudid=aad381b0192fcbca&manifest_version_code=570&resolution=1152*1920&dpi=480&update_version_code=5701";
         new NetPresenter(this, "VideoModel").getNetByteByOkHttp3(url,
                 "GET", null, null, null);
     }
@@ -183,11 +182,13 @@ public class VideoFragment extends Fragment implements INetView, IJsonView, Swip
             for (int i = 0; i < listBeanList.size(); i++) {
                 if (listBeanList.get(i).getType() == 1) {
                     if (listBeanList.get(i).getGroup() != null && listBeanList.get(i).getGroup().getType() == 2) {
+                        if (listBeanList.get(i).getGroup().getA480p_video().getHeight() <= 400) {
                             mDataBean1List.add(listBeanList.get(i));
+                        }
                     }
                 }
             }
-            mPictureFragmentAdapter.notifyDataSetChanged();
+            mVideoFragmentAdapter.notifyDataSetChanged();
         }
     }
 

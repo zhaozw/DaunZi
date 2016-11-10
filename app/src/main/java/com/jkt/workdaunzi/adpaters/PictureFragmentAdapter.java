@@ -106,12 +106,11 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
             }
             if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getGifvideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0) != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl())) {
                 if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getLarge_image() != null && dataBean1.getGroup().getLarge_image().getUrl_list() != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0) != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null)) {
-                    if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddle_image() != null && dataBean1.getGroup().getMiddle_image().getUrl_list() != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null)) {
-                        int width = dataBean1.getGroup().getLarge_image().getWidth();
-                        int height = dataBean1.getGroup().getLarge_image().getHeight();
-                        Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
-                        mImageView.setImageBitmap(scaledBitmap);
-                        Drawable drawable = mImageView.getDrawable();
+                    int width = dataBean1.getGroup().getLarge_image().getWidth();
+                    int height = dataBean1.getGroup().getLarge_image().getHeight();
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
+                    mImageView.setImageBitmap(scaledBitmap);
+                    Drawable drawable = mImageView.getDrawable();
 //                        if (gifImageView != null) {
 //                            gifImageView.setVisibility(View.VISIBLE);
 //                        }
@@ -182,12 +181,13 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
 //
 //                                    }
 //                                });
-                        Glide.with(mContext)
-                                .load(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl())
-                                .placeholder(drawable)
-                                .into(pictureImageView);
-                        return;
-                    }
+                    Glide.with(mContext)
+                            .load(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl())
+                            .asGif()
+                            .placeholder(drawable)
+                            .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                            .into(pictureImageView);
+                    return;
                 }
             } else if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddle_image() != null && dataBean1.getGroup().getMiddle_image().getUrl_list() != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null)) {
                 int width = dataBean1.getGroup().getMiddle_image().getWidth();

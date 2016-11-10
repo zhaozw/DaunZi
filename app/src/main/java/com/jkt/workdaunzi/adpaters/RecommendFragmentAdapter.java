@@ -39,6 +39,11 @@ public class RecommendFragmentAdapter extends RecyclerView.Adapter {
     private List<RecommendModel.DataBean.DataBean1> mDataBean1List;
     private ImageView mOutImageView;
     private Bitmap mBitmap;
+    private VideoViewHolder mVideoViewHolder;
+
+    public VideoViewHolder getVideoViewHolder() {
+        return mVideoViewHolder;
+    }
 
     public RecommendFragmentAdapter(Context context, List<RecommendModel.DataBean.DataBean1> listBeanList) {
         mContext = context;
@@ -107,6 +112,7 @@ public class RecommendFragmentAdapter extends RecyclerView.Adapter {
 
         public VideoViewHolder(View itemView) {
             super(itemView);
+            mMediaController = new MediaController(mContext);
             mSparseArrayCompat = new SparseArrayCompat<>();
         }
 
@@ -159,12 +165,12 @@ public class RecommendFragmentAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
             if (v.getTag() != null && v.getTag() instanceof String) {
+                mVideoViewHolder = this;
                 String tag = (String) v.getTag();
                 mIndicatorImageView.setVisibility(View.INVISIBLE);
                 mProgressBar.setVisibility(View.VISIBLE);
                 mVideoView.setVisibility(View.VISIBLE);
                 mVideoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mPictureImageView.getHeight()));
-                mMediaController = new MediaController(mContext);
                 mVideoView.setMediaController(mMediaController);
                 mVideoView.setVideoPath(tag);
                 mVideoView.setOnCompletionListener(this);
@@ -176,6 +182,10 @@ public class RecommendFragmentAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onCompletion(MediaPlayer mp) {
+            videoReset();
+        }
+
+        public void videoReset() {
             mPictureImageView.setVisibility(View.VISIBLE);
             mIndicatorImageView.setVisibility(View.VISIBLE);
             mProgressBar.setVisibility(View.INVISIBLE);
