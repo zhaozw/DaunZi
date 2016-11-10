@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -120,6 +121,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
                         .placeholder(drawable)
                         .into(mPictureImageView);
                 mPictureImageView.setTag(dataBean1.getGroup().getA480p_video().getUrl_list().get(0).getUrl());
+
             }
 
         }
@@ -138,6 +140,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         public void onClick(View v) {
             if (v.getTag() != null && v.getTag() instanceof String) {
                 String tag = (String) v.getTag();
+                mVideoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mPictureImageView.getHeight()));
                 mVideoView.setMediaController(new MediaController(mContext));
                 mVideoView.setVideoPath(tag);
                 mVideoView.setOnCompletionListener(this);

@@ -39,16 +39,30 @@
             android:textColor="#000"
             android:textSize="18sp"/>
 
-
-        <ImageView
-            android:id="@+id/item_picture_image"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:adjustViewBounds="true"
-            android:maxHeight="1200dp"
-            android:scaleType="fitXY"
-            />
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/item_picture_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:adjustViewBounds="true"
+                android:maxHeight="1200dp"
+                android:scaleType="fitXY"
+                />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/item_picture_gifImage"
+                android:src="@drawable/gifbutton_textpage_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+        </FrameLayout>
     </LinearLayout>
 
     <View

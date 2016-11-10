@@ -63,7 +63,7 @@ public class VideoFragment extends Fragment implements INetView, IJsonView, Swip
 
     private void initRecyclerViewAdapter() {
         mDataBean1List = new ArrayList<>();
-        mPictureFragmentAdapter = new VideoFragmentAdapter(getContext(), mDataBean1List);
+        mPictureFragmentAdapter = new VideoFragmentAdapter(getActivity(), mDataBean1List);
         mRecyclerView.setAdapter(mPictureFragmentAdapter);
     }
 

@@ -85,11 +85,12 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
             mSparseArrayCompat = new SparseArrayCompat<>();
         }
 
-        void bindView(PictureModel.DataBean.DataBean1 dataBean1) {
+        void bindView(final PictureModel.DataBean.DataBean1 dataBean1) {
             TextView userNameView = (TextView) customFindViewByID(R.id.item_picture_name);
             TextView contentTextView = (TextView) customFindViewByID(R.id.item_picture_text);
             ImageView userIconView = (ImageView) customFindViewByID(R.id.item_picture_icon);
-            ImageView pictureImageView = (ImageView) customFindViewByID(R.id.item_picture_image);
+            final ImageView gifImageView = (ImageView) customFindViewByID(R.id.item_picture_gifImage);
+            final ImageView pictureImageView = (ImageView) customFindViewByID(R.id.item_picture_image);
             if (userNameView != null && dataBean1 != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null) {
                 userNameView.setText(dataBean1.getGroup().getUser().getName());
             }
@@ -111,11 +112,79 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
                         Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
                         mImageView.setImageBitmap(scaledBitmap);
                         Drawable drawable = mImageView.getDrawable();
+//                        if (gifImageView != null) {
+//                            gifImageView.setVisibility(View.VISIBLE);
+//                        }
+//                        Glide.with(mContext)
+//                                .load(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl())
+//                                .asGif()
+//                                .placeholder(drawable)
+//                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                                .into(new Target<GifDrawable>() {
+//                                    @Override
+//                                    public void onLoadStarted(Drawable placeholder) {
+////                                        Glide.with(mContext)
+////                                                .load(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl())
+////                                                .asBitmap()
+////                                                .placeholder(placeholder)
+////                                                .into(pictureImageView);
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+////                                        if (gifImageView != null) {
+//                                            gifImageView.setVisibility(View.INVISIBLE);
+////                                        }
+//                                    }
+//
+//                                    @Override
+//                                    public void onResourceReady(GifDrawable resource, GlideAnimation<? super GifDrawable> glideAnimation) {
+////                                        if (gifImageView != null) {
+//                                            gifImageView.setVisibility(View.INVISIBLE);
+////                                        }
+//                                        pictureImageView.setImageDrawable(resource);
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onLoadCleared(Drawable placeholder) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void getSize(SizeReadyCallback cb) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void setRequest(Request request) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public Request getRequest() {
+//                                        return null;
+//                                    }
+//
+//                                    @Override
+//                                    public void onStart() {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onStop() {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onDestroy() {
+//
+//                                    }
+//                                });
                         Glide.with(mContext)
                                 .load(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl())
-                                .asGif()
                                 .placeholder(drawable)
-                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
                                 .into(pictureImageView);
                         return;
                     }
@@ -124,6 +193,9 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
                 int width = dataBean1.getGroup().getMiddle_image().getWidth();
                 int height = dataBean1.getGroup().getMiddle_image().getHeight();
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
+//                if (gifImageView != null) {
+//                    gifImageView.setVisibility(View.GONE);
+//                }
                 mImageView.setImageBitmap(scaledBitmap);
                 Drawable drawable = mImageView.getDrawable();
                 Glide.with(mContext)
