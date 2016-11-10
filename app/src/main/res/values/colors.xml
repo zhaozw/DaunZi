@@ -11,6 +11,7 @@
     <color name="colorProgressGray">#737272</color>
     <color name="colorlowBrown">#d0815c</color>
     <color name="colorWhite">#f1ecf5</color>
+    <color name="colorLowBlack">#4d4d4d</color>
 
 
 </resources>

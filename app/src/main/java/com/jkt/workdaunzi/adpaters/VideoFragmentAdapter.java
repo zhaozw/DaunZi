@@ -79,11 +79,13 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         return mDataBean1List.size() + 1;
     }
 
-    public class DunZiViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, MediaPlayer.OnCompletionListener {
+    public class DunZiViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
         private final SparseArrayCompat<View> mSparseArrayCompat;
         private VideoView mVideoView;
         private ImageView mPictureImageView;
         private ImageView mIndicatorImageView;
+        private ProgressBar mProgressBar;
+        private MediaController mMediaController;
 
         public DunZiViewHolder(View itemView) {
             super(itemView);
@@ -97,6 +99,8 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
             ImageView userIconView = (ImageView) customFindViewByID(R.id.item_video_icon);
             mPictureImageView = (ImageView) customFindViewByID(R.id.item_video_image);
             mIndicatorImageView = (ImageView) customFindViewByID(R.id.item_video_indicator);
+            mProgressBar = (ProgressBar) customFindViewByID(R.id.item_video_progressBar);
+
             if (userNameView != null && dataBean1 != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null) {
                 userNameView.setText(dataBean1.getGroup().getUser().getName());
             }
@@ -140,22 +144,40 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         public void onClick(View v) {
             if (v.getTag() != null && v.getTag() instanceof String) {
                 String tag = (String) v.getTag();
+                mIndicatorImageView.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
+                mVideoView.setVisibility(View.VISIBLE);
                 mVideoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mPictureImageView.getHeight()));
-                mVideoView.setMediaController(new MediaController(mContext));
+                mVideoView.setMediaController(mMediaController);
                 mVideoView.setVideoPath(tag);
                 mVideoView.setOnCompletionListener(this);
+                mVideoView.setOnErrorListener(this);
+                mVideoView.setOnPreparedListener(this);
                 mVideoView.start();
-                mVideoView.setVisibility(View.VISIBLE);
-                mPictureImageView.setVisibility(View.INVISIBLE);
-                mIndicatorImageView.setVisibility(View.INVISIBLE);
             }
         }
-
+        @Override
+        public void onPrepared(MediaPlayer mp) {
+            mProgressBar.setVisibility(View.INVISIBLE);
+            mPictureImageView.setVisibility(View.INVISIBLE);
+            mVideoView.setVisibility(View.VISIBLE);
+        }
+        @Override
+        public boolean onError(MediaPlayer mp, int what, int extra) {
+            mPictureImageView.setVisibility(View.VISIBLE);
+            mIndicatorImageView.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
+            mVideoView.setVisibility(View.INVISIBLE);
+            mVideoView.stopPlayback();
+            return false;
+        }
         @Override
         public void onCompletion(MediaPlayer mp) {
             mPictureImageView.setVisibility(View.VISIBLE);
             mIndicatorImageView.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
             mVideoView.setVisibility(View.INVISIBLE);
+            mVideoView.stopPlayback();
 
         }
     }
