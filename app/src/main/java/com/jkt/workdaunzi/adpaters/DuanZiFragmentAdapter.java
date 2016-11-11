@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jkt.workdaunzi.R;
 import com.jkt.workdaunzi.models.DuanziModel;
+import com.jkt.workdaunzi.tool.CustomToast;
 
 import java.util.List;
 
@@ -67,8 +69,18 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
         return mDataBean1List.size() + 1;
     }
 
-    public class DunZiViewHolder extends RecyclerView.ViewHolder {
+    public class DunZiViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final SparseArrayCompat<View> mSparseArrayCompat;
+        private ImageView mDiggImageView;
+        private ImageView mBuryImageView;
+        private ImageView mShareImageView;
+        private DuanziModel.DataBean.DataBean1 mDataBean1;
+        private TextView mBuryTextView;
+        private TextView mDiggTextView;
+        private TextView mShareTextView;
+        private LinearLayout mDiggLayout;
+        private LinearLayout mBuryLayout;
+        private LinearLayout mShareLayout;
 
         public DunZiViewHolder(View itemView) {
             super(itemView);
@@ -76,32 +88,60 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
         }
 
         void bindView(DuanziModel.DataBean.DataBean1 dataBean1) {
+            mDataBean1 = dataBean1;
             TextView userNameView = (TextView) customFindViewByID(R.id.item_duanzi_text_name);
             TextView contentTextView = (TextView) customFindViewByID(R.id.item_duanzi_text_text);
             ImageView userIconView = (ImageView) customFindViewByID(R.id.item_duanzi_text_icon);
-            TextView diggTextView = (TextView) customFindViewByID(R.id.item_duanzi_diggText);
-            TextView buryTextView = (TextView) customFindViewByID(R.id.item_duanzi_buryText);
-            TextView shareTextView = (TextView) customFindViewByID(R.id.item_duanzi_shareText);
-            ImageView diggImageView = (ImageView) customFindViewByID(R.id.item_duanzi_diggImage);
-            ImageView buryImageView = (ImageView) customFindViewByID(R.id.item_duanzi_buryImage);
-            ImageView shareImageView = (ImageView) customFindViewByID(R.id.item_duanzi_shareImage);
-            if (userNameView != null && dataBean1 != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null) {
+            mDiggTextView = (TextView) customFindViewByID(R.id.item_duanzi_diggText);
+            mBuryTextView = (TextView) customFindViewByID(R.id.item_duanzi_buryText);
+            mShareTextView = (TextView) customFindViewByID(R.id.item_duanzi_shareText);
+            mDiggImageView = (ImageView) customFindViewByID(R.id.item_duanzi_diggImage);
+            mBuryImageView = (ImageView) customFindViewByID(R.id.item_duanzi_buryImage);
+            mShareImageView = (ImageView) customFindViewByID(R.id.item_duanzi_shareImage);
+            mDiggLayout = (LinearLayout) customFindViewByID(R.id.item_duanzi_diggLayout);
+            mBuryLayout = (LinearLayout) customFindViewByID(R.id.item_duanzi_buryLayout);
+            mShareLayout = (LinearLayout) customFindViewByID(R.id.item_duanzi_shareLayout);
+            initImageState(dataBean1);
+            initData(dataBean1, userNameView, contentTextView, userIconView, mDiggTextView, mBuryTextView, mShareTextView);
+            setListeners();
+        }
+
+        private void initImageState(DuanziModel.DataBean.DataBean1 dataBean1) {
+            if (!dataBean1.isChoose()) {
+                mDiggImageView.setImageResource(R.drawable.ic_digg_normal);
+                mBuryImageView.setImageResource(R.drawable.ic_bury_normal);
+                mShareImageView.setImageResource(R.drawable.ic_more_action_normal);
+                return;
+            }
+            if (dataBean1.isChooseShare()) {
+                mShareImageView.setImageResource(R.drawable.ic_more_action_pressed);
+            }
+            if (dataBean1.isChooseDigg()) {
+                mDiggImageView.setImageResource(R.drawable.ic_digg_pressed);
+                return;
+            }
+            if (dataBean1.isChooseBury()) {
+                mBuryImageView.setImageResource(R.drawable.ic_bury_pressed);
+            }
+
+        }
+
+        private void setListeners() {
+            mDiggLayout.setOnClickListener(this);
+            mBuryLayout.setOnClickListener(this);
+            mShareLayout.setOnClickListener(this);
+        }
+
+        private void initData(DuanziModel.DataBean.DataBean1 dataBean1, TextView userNameView, TextView contentTextView, ImageView userIconView, TextView diggTextView, TextView buryTextView, TextView shareTextView) {
+            try {
                 userNameView.setText(dataBean1.getGroup().getUser().getName());
-            }
-            if (contentTextView != null && dataBean1.getGroup() != null) {
                 contentTextView.setText(dataBean1.getGroup().getText());
-            }
-            if (diggTextView != null && dataBean1.getGroup() != null) {
                 diggTextView.setText(String.valueOf(dataBean1.getGroup().getDigg_count()));
-            }
-            if (buryTextView != null && dataBean1.getGroup() != null) {
                 buryTextView.setText(String.valueOf(dataBean1.getGroup().getBury_count()));
-            }
-            if (shareTextView != null && dataBean1.getGroup() != null) {
                 shareTextView.setText(String.valueOf(dataBean1.getGroup().getShare_count()));
-            }
-            if (userIconView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null && dataBean1.getGroup().getUser().getAvatar_url() != null && !"".equals(dataBean1.getGroup().getUser().getAvatar_url())) {
                 Glide.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url()).into(userIconView);
+            } catch (Exception e) {
+
             }
         }
 
@@ -115,6 +155,39 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
             return ret;
         }
 
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.item_duanzi_diggLayout:
+                    if (mDataBean1.isChooseBury() || mDataBean1.isChooseDigg()) {
+                        CustomToast.getToast(mContext, "你已经选择过啦~").show();
+                        return;
+                    }
+                    mDataBean1.setChoose(true);
+                    mDataBean1.setChooseDigg(true);
+                    mDiggTextView.setText(mDataBean1.getGroup().getDigg_count() + 1 + "");
+                    mDiggImageView.setImageResource(R.drawable.ic_digg_pressed);
+                    break;
+                case R.id.item_duanzi_buryLayout:
+                    if (mDataBean1.isChooseBury() || mDataBean1.isChooseDigg()) {
+                        CustomToast.getToast(mContext, "你已经选择过啦~").show();
+                        return;
+                    }
+                    mDataBean1.setChooseBury(true);
+                    mDataBean1.setChoose(true);
+                    mBuryTextView.setText(mDataBean1.getGroup().getBury_count() + 1 + "");
+                    mBuryImageView.setImageResource(R.drawable.ic_bury_pressed);
+                    break;
+                case R.id.item_duanzi_shareLayout:
+                    mShareImageView.setImageResource(R.drawable.ic_more_action_pressed);
+                    mShareTextView.setText(mDataBean1.getGroup().getShare_count() + 1 + "");
+                    mDataBean1.setChooseShare(true);
+                    mDataBean1.setChoose(true);
+
+                    break;
+
+            }
+        }
     }
 
     public class FoorViewHolder extends RecyclerView.ViewHolder {
