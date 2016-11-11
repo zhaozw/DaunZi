@@ -93,8 +93,8 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
         void bindView(DuanziModel.DataBean.DataBean1 dataBean1) {
             mDataBean1 = dataBean1;
             initFindView();
+            initData(dataBean1);
             initImageState(dataBean1);
-            initData(dataBean1, mUserNameView, mContentTextView, mUserIconView, mDiggTextView, mBuryTextView, mShareTextView);
             setListeners();
         }
 
@@ -121,13 +121,16 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
                 return;
             }
             if (dataBean1.isChooseShare()) {
+                mShareTextView.setText(mDataBean1.getGroup().getShare_count() + 1 + "");
                 mShareImageView.setImageResource(R.drawable.ic_more_action_pressed);
             }
             if (dataBean1.isChooseDigg()) {
+                mDiggTextView.setText(mDataBean1.getGroup().getDigg_count() + 1 + "");
                 mDiggImageView.setImageResource(R.drawable.ic_digg_pressed);
                 return;
             }
             if (dataBean1.isChooseBury()) {
+                mBuryTextView.setText(mDataBean1.getGroup().getBury_count() + 1 + "");
                 mBuryImageView.setImageResource(R.drawable.ic_bury_pressed);
             }
 
@@ -139,14 +142,14 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
             mShareLayout.setOnClickListener(this);
         }
 
-        private void initData(DuanziModel.DataBean.DataBean1 dataBean1, TextView userNameView, TextView contentTextView, ImageView userIconView, TextView diggTextView, TextView buryTextView, TextView shareTextView) {
+        private void initData(DuanziModel.DataBean.DataBean1 dataBean1) {
             try {
-                userNameView.setText(dataBean1.getGroup().getUser().getName());
-                contentTextView.setText(dataBean1.getGroup().getText());
-                diggTextView.setText(String.valueOf(dataBean1.getGroup().getDigg_count()));
-                buryTextView.setText(String.valueOf(dataBean1.getGroup().getBury_count()));
-                shareTextView.setText(String.valueOf(dataBean1.getGroup().getShare_count()));
-                Glide.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url()).into(userIconView);
+                mUserNameView.setText(dataBean1.getGroup().getUser().getName());
+                mContentTextView.setText(dataBean1.getGroup().getText());
+                mDiggTextView.setText(String.valueOf(dataBean1.getGroup().getDigg_count()));
+                mBuryTextView.setText(String.valueOf(dataBean1.getGroup().getBury_count()));
+                mShareTextView.setText(String.valueOf(dataBean1.getGroup().getShare_count()));
+                Glide.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url()).into(mUserIconView);
             } catch (Exception e) {
 
             }

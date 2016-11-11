@@ -104,8 +104,8 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
         void bindView(PictureModel.DataBean.DataBean1 dataBean1) {
             mDataBean1 = dataBean1;
             initFindView();
-            initImageState(dataBean1);
             initData(dataBean1);
+            initImageState(dataBean1);
             setListeners();
         }
 
@@ -123,13 +123,16 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
                 return;
             }
             if (dataBean1.isChooseShare()) {
+                mShareTextView.setText(mDataBean1.getGroup().getShare_count() + 1 + "");
                 mShareImageView.setImageResource(R.drawable.ic_more_action_pressed);
             }
             if (dataBean1.isChooseDigg()) {
+                mDiggTextView.setText(mDataBean1.getGroup().getDigg_count() + 1 + "");
                 mDiggImageView.setImageResource(R.drawable.ic_digg_pressed);
                 return;
             }
             if (dataBean1.isChooseBury()) {
+                mBuryTextView.setText(mDataBean1.getGroup().getBury_count() + 1 + "");
                 mBuryImageView.setImageResource(R.drawable.ic_bury_pressed);
             }
 
