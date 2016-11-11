@@ -104,8 +104,8 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
         void bindView(PictureModel.DataBean.DataBean1 dataBean1) {
             mDataBean1 = dataBean1;
             initFindView();
-            initData(dataBean1);
             initImageState(dataBean1);
+            initData(dataBean1);
             setListeners();
         }
 

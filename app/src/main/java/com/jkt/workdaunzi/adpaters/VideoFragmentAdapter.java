@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import android.widget.VideoView;
 import com.bumptech.glide.Glide;
 import com.jkt.workdaunzi.R;
 import com.jkt.workdaunzi.models.VideoModel;
+import com.jkt.workdaunzi.tool.CustomToast;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -87,13 +89,25 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
     }
 
     public class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
-        private int mPosition;
+        private VideoModel.DataBean.DataBean1 mDataBean1;
         private final SparseArrayCompat<View> mSparseArrayCompat;
         private VideoView mVideoView;
         private ImageView mPictureImageView;
         private ImageView mIndicatorImageView;
         private ProgressBar mProgressBar;
         private MediaController mMediaController;
+        private TextView mUserNameView;
+        private TextView mContentTextView;
+        private TextView mDiggTextView;
+        private TextView mBuryTextView;
+        private TextView mShareTextView;
+        private ImageView mDiggImageView;
+        private ImageView mBuryImageView;
+        private ImageView mShareImageView;
+        private LinearLayout mDiggLayout;
+        private LinearLayout mBuryLayout;
+        private LinearLayout mShareLayout;
+        private ImageView mUserIconView;
 
         public VideoViewHolder(View itemView) {
             super(itemView);
@@ -102,42 +116,61 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         }
 
         void bindView(VideoModel.DataBean.DataBean1 dataBean1, int position) {
+            mDataBean1 = dataBean1;
+            initFindView();
+            initImageState(dataBean1);
+            initData(dataBean1);
+            setListeners();
 
-            TextView userNameView = (TextView) itemView.findViewById(R.id.item_video_name);
-            TextView contentTextView = (TextView) customFindViewByID(R.id.item_video_text);
-            TextView diggTextView = (TextView) customFindViewByID(R.id.item_video_diggText);
-            TextView buryTextView = (TextView) customFindViewByID(R.id.item_video_buryText);
-            TextView shareTextView = (TextView) customFindViewByID(R.id.item_video_shareText);
-            ImageView diggImageView = (ImageView) customFindViewByID(R.id.item_video_diggImage);
-            ImageView buryImageView = (ImageView) customFindViewByID(R.id.item_video_buryImage);
-            ImageView shareImageView = (ImageView) customFindViewByID(R.id.item_video_shareImage);
-            mVideoView = (VideoView) customFindViewByID(R.id.item_video_video);
-            ImageView userIconView = (ImageView) customFindViewByID(R.id.item_video_icon);
-            mPictureImageView = (ImageView) customFindViewByID(R.id.item_video_image);
-            mIndicatorImageView = (ImageView) customFindViewByID(R.id.item_video_indicator);
-            mProgressBar = (ProgressBar) customFindViewByID(R.id.item_video_progressBar);
-
-            if (userNameView != null && dataBean1 != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null) {
-                userNameView.setText(dataBean1.getGroup().getUser().getName());
+        }
+        private void initImageState(VideoModel.DataBean.DataBean1 dataBean1) {
+            if (!dataBean1.isChoose()) {
+                mDiggImageView.setImageResource(R.drawable.ic_digg_normal);
+                mBuryImageView.setImageResource(R.drawable.ic_bury_normal);
+                mShareImageView.setImageResource(R.drawable.ic_more_action_normal);
+                return;
             }
-            if (contentTextView != null && dataBean1.getGroup() != null) {
-                contentTextView.setText(dataBean1.getGroup().getText());
-                if ("".equals(contentTextView.getText()) || contentTextView.getText() == null) {
-                    contentTextView.setVisibility(View.GONE);
+            if (dataBean1.isChooseShare()) {
+                mShareImageView.setImageResource(R.drawable.ic_more_action_pressed);
+            }
+            if (dataBean1.isChooseDigg()) {
+                mDiggImageView.setImageResource(R.drawable.ic_digg_pressed);
+                return;
+            }
+            if (dataBean1.isChooseBury()) {
+                mBuryImageView.setImageResource(R.drawable.ic_bury_pressed);
+            }
+
+        }
+        private void setListeners() {
+            mDiggLayout.setOnClickListener(this);
+            mBuryLayout.setOnClickListener(this);
+            mShareLayout.setOnClickListener(this);
+        }
+
+
+        private void initData(VideoModel.DataBean.DataBean1 dataBean1) {
+            if (mUserNameView != null && dataBean1 != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null) {
+                mUserNameView.setText(dataBean1.getGroup().getUser().getName());
+            }
+            if (mContentTextView != null && dataBean1.getGroup() != null) {
+                mContentTextView.setText(dataBean1.getGroup().getText());
+                if ("".equals(mContentTextView.getText()) || mContentTextView.getText() == null) {
+                    mContentTextView.setVisibility(View.GONE);
                 }
             }
-            if (userIconView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null && dataBean1.getGroup().getUser().getAvatar_url() != null && !"".equals(dataBean1.getGroup().getUser().getAvatar_url())) {
+            if (mUserIconView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null && dataBean1.getGroup().getUser().getAvatar_url() != null && !"".equals(dataBean1.getGroup().getUser().getAvatar_url())) {
                 Glide.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url())
-                        .into(userIconView);
+                        .into(mUserIconView);
             }
-            if (diggTextView != null && dataBean1.getGroup() != null) {
-                diggTextView.setText(String.valueOf(dataBean1.getGroup().getDigg_count()));
+            if (mDiggTextView != null && dataBean1.getGroup() != null) {
+                mDiggTextView.setText(String.valueOf(dataBean1.getGroup().getDigg_count()));
             }
-            if (buryTextView != null && dataBean1.getGroup() != null) {
-                buryTextView.setText(String.valueOf(dataBean1.getGroup().getBury_count()));
+            if (mBuryTextView != null && dataBean1.getGroup() != null) {
+                mBuryTextView.setText(String.valueOf(dataBean1.getGroup().getBury_count()));
             }
-            if (shareTextView != null && dataBean1.getGroup() != null) {
-                shareTextView.setText(String.valueOf(dataBean1.getGroup().getShare_count()));
+            if (mShareTextView != null && dataBean1.getGroup() != null) {
+                mShareTextView.setText(String.valueOf(dataBean1.getGroup().getShare_count()));
             }
             if (mPictureImageView != null && dataBean1.getGroup().getA480p_video() != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddlecover() != null && dataBean1.getGroup().getMiddlecover().getUrl_list() != null && dataBean1.getGroup().getMiddlecover().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddlecover().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddlecover().getUrl_list().get(0).getUrl() != null)) {
                 mPictureImageView.setOnClickListener(this);
@@ -152,7 +185,25 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
                 mPictureImageView.setTag(dataBean1.getGroup().getA480p_video().getUrl_list().get(0).getUrl());
 
             }
+        }
 
+        private void initFindView() {
+            mUserNameView = (TextView) itemView.findViewById(R.id.item_video_name);
+            mContentTextView = (TextView) customFindViewByID(R.id.item_video_text);
+            mDiggTextView = (TextView) customFindViewByID(R.id.item_video_diggText);
+            mBuryTextView = (TextView) customFindViewByID(R.id.item_video_buryText);
+            mShareTextView = (TextView) customFindViewByID(R.id.item_video_shareText);
+            mDiggImageView = (ImageView) customFindViewByID(R.id.item_video_diggImage);
+            mBuryImageView = (ImageView) customFindViewByID(R.id.item_video_buryImage);
+            mShareImageView = (ImageView) customFindViewByID(R.id.item_video_shareImage);
+            mDiggLayout = (LinearLayout) customFindViewByID(R.id.item_video_diggLayout);
+            mBuryLayout = (LinearLayout) customFindViewByID(R.id.item_video_buryLayout);
+            mShareLayout = (LinearLayout) customFindViewByID(R.id.item_video_shareLayout);
+            mVideoView = (VideoView) customFindViewByID(R.id.item_video_video);
+            mUserIconView = (ImageView) customFindViewByID(R.id.item_video_icon);
+            mPictureImageView = (ImageView) customFindViewByID(R.id.item_video_image);
+            mIndicatorImageView = (ImageView) customFindViewByID(R.id.item_video_indicator);
+            mProgressBar = (ProgressBar) customFindViewByID(R.id.item_video_progressBar);
         }
 
         public View customFindViewByID(int resourceID) {
@@ -166,20 +217,52 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         }
 
         @Override
+
         public void onClick(View v) {
-            if (v.getTag() != null && v.getTag() instanceof String) {
-                mVideoViewHolder = this;
-                String tag = (String) v.getTag();
-                mIndicatorImageView.setVisibility(View.INVISIBLE);
-                mProgressBar.setVisibility(View.VISIBLE);
-                mVideoView.setMediaController(mMediaController);
-                mVideoView.setVisibility(View.VISIBLE);
-                mVideoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mPictureImageView.getHeight()));
-                mVideoView.setVideoPath(tag);
-                mVideoView.setOnCompletionListener(this);
-                mVideoView.setOnErrorListener(this);
-                mVideoView.setOnPreparedListener(this);
-                mVideoView.start();
+            switch (v.getId()) {
+                case R.id.item_video_diggLayout:
+                    if (mDataBean1.isChooseBury() || mDataBean1.isChooseDigg()) {
+                        CustomToast.getToast(mContext, "你已经选择过啦~").show();
+                        return;
+                    }
+                    mDataBean1.setChoose(true);
+                    mDataBean1.setChooseDigg(true);
+                    mDiggTextView.setText(mDataBean1.getGroup().getDigg_count() + 1 + "");
+                    mDiggImageView.setImageResource(R.drawable.ic_digg_pressed);
+                    break;
+                case R.id.item_video_buryLayout:
+                    if (mDataBean1.isChooseBury() || mDataBean1.isChooseDigg()) {
+                        CustomToast.getToast(mContext, "你已经选择过啦~").show();
+                        return;
+                    }
+                    mDataBean1.setChooseBury(true);
+                    mDataBean1.setChoose(true);
+                    mBuryTextView.setText(mDataBean1.getGroup().getBury_count() + 1 + "");
+                    mBuryImageView.setImageResource(R.drawable.ic_bury_pressed);
+                    break;
+                case R.id.item_video_shareLayout:
+                    mShareImageView.setImageResource(R.drawable.ic_more_action_pressed);
+                    mShareTextView.setText(mDataBean1.getGroup().getShare_count() + 1 + "");
+                    mDataBean1.setChooseShare(true);
+                    mDataBean1.setChoose(true);
+
+                    break;
+                case R.id.item_video_image:
+                    if (v.getTag() != null && v.getTag() instanceof String) {
+                        mVideoViewHolder = this;
+                        String tag = (String) v.getTag();
+                        mIndicatorImageView.setVisibility(View.INVISIBLE);
+                        mProgressBar.setVisibility(View.VISIBLE);
+                        mVideoView.setMediaController(mMediaController);
+                        mVideoView.setVisibility(View.VISIBLE);
+                        mVideoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mPictureImageView.getHeight()));
+                        mVideoView.setVideoPath(tag);
+                        mVideoView.setOnCompletionListener(this);
+                        mVideoView.setOnErrorListener(this);
+                        mVideoView.setOnPreparedListener(this);
+                        mVideoView.start();
+                    }
+                    break;
             }
         }
 
