@@ -7,15 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jkt.workdaunzi.*;
+import com.jkt.workdaunzi.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DescoveryFragment extends Fragment {
+public class DiscoveryFragment extends Fragment {
 
 
-    public DescoveryFragment() {
+    public DiscoveryFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,8 @@ public class DescoveryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_descovery, container, false);
+        View inflate = inflater.inflate(R.layout.fragment_descovery, container, false);
+        return inflate;
     }
 
 }

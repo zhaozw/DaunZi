@@ -7,22 +7,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.RadioGroup;
 
 import com.jkt.workdaunzi.fragments.CountFragment;
-import com.jkt.workdaunzi.fragments.DescoveryFragment;
+import com.jkt.workdaunzi.fragments.DiscoveryFragment;
 import com.jkt.workdaunzi.fragments.HomeFragment;
 import com.jkt.workdaunzi.tool.CustomToast;
+
+import cn.sharesdk.framework.ShareSDK;
 
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
     private Fragment beforeFragment;
     private RadioGroup mRadioGroup;
     private HomeFragment mHomeFragment;
-    private DescoveryFragment mDescoveryFragment;
+    private DiscoveryFragment mDescoveryFragment;
     private CountFragment mCountFragment;
     private long mTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ShareSDK.initSDK(getApplicationContext());
         initViews();
         initFragments();
         initChoose();
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     private void initFragments() {
         mHomeFragment = new HomeFragment();
-        mDescoveryFragment = new DescoveryFragment();
+        mDescoveryFragment = new DiscoveryFragment();
         mCountFragment = new CountFragment();
     }
 
@@ -92,5 +95,11 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
             return;
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ShareSDK.stopSDK(getApplicationContext());
     }
 }

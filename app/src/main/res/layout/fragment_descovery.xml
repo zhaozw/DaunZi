@@ -4,9 +4,10 @@
              android:layout_height="match_parent"
              tools:context="com.jkt.workdaunzi.MainActivity">
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="关注"/>
+        android:id="@+id/fragment_discovery_button"
+        android:text="分享"/>
 
 </FrameLayout>
