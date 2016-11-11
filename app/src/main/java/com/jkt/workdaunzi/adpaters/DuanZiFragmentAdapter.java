@@ -81,6 +81,9 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
         private LinearLayout mDiggLayout;
         private LinearLayout mBuryLayout;
         private LinearLayout mShareLayout;
+        private TextView mUserNameView;
+        private TextView mContentTextView;
+        private ImageView mUserIconView;
 
         public DunZiViewHolder(View itemView) {
             super(itemView);
@@ -89,9 +92,16 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
 
         void bindView(DuanziModel.DataBean.DataBean1 dataBean1) {
             mDataBean1 = dataBean1;
-            TextView userNameView = (TextView) customFindViewByID(R.id.item_duanzi_text_name);
-            TextView contentTextView = (TextView) customFindViewByID(R.id.item_duanzi_text_text);
-            ImageView userIconView = (ImageView) customFindViewByID(R.id.item_duanzi_text_icon);
+            initFindView();
+            initImageState(dataBean1);
+            initData(dataBean1, mUserNameView, mContentTextView, mUserIconView, mDiggTextView, mBuryTextView, mShareTextView);
+            setListeners();
+        }
+
+        private void initFindView() {
+            mUserNameView = (TextView) customFindViewByID(R.id.item_duanzi_text_name);
+            mContentTextView = (TextView) customFindViewByID(R.id.item_duanzi_text_text);
+            mUserIconView = (ImageView) customFindViewByID(R.id.item_duanzi_text_icon);
             mDiggTextView = (TextView) customFindViewByID(R.id.item_duanzi_diggText);
             mBuryTextView = (TextView) customFindViewByID(R.id.item_duanzi_buryText);
             mShareTextView = (TextView) customFindViewByID(R.id.item_duanzi_shareText);
@@ -101,9 +111,6 @@ public class DuanziFragmentAdapter extends RecyclerView.Adapter {
             mDiggLayout = (LinearLayout) customFindViewByID(R.id.item_duanzi_diggLayout);
             mBuryLayout = (LinearLayout) customFindViewByID(R.id.item_duanzi_buryLayout);
             mShareLayout = (LinearLayout) customFindViewByID(R.id.item_duanzi_shareLayout);
-            initImageState(dataBean1);
-            initData(dataBean1, userNameView, contentTextView, userIconView, mDiggTextView, mBuryTextView, mShareTextView);
-            setListeners();
         }
 
         private void initImageState(DuanziModel.DataBean.DataBean1 dataBean1) {

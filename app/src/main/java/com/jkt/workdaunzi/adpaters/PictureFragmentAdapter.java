@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.jkt.workdaunzi.R;
 import com.jkt.workdaunzi.models.PictureModel;
+import com.jkt.workdaunzi.tool.CustomToast;
 
 import java.util.List;
 
@@ -77,149 +79,129 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
         return mDataBean1List.size() + 1;
     }
 
-    public class PictureViewHolder extends RecyclerView.ViewHolder {
+    public class PictureViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final SparseArrayCompat<View> mSparseArrayCompat;
+        private PictureModel.DataBean.DataBean1 mDataBean1;
+        private LinearLayout mDiggLayout;
+        private LinearLayout mBuryLayout;
+        private LinearLayout mShareLayout;
+        private TextView mDiggTextView;
+        private TextView mBuryTextView;
+        private TextView mShareTextView;
+        private ImageView mDiggImageView;
+        private ImageView mBuryImageView;
+        private ImageView mShareImageView;
+        private ImageView mUserIconView;
+        private TextView mContentTextView;
+        private TextView mUserNameView;
+        private ImageView mPictureImageView;
 
         public PictureViewHolder(View itemView) {
             super(itemView);
             mSparseArrayCompat = new SparseArrayCompat<>();
         }
 
-        void bindView(final PictureModel.DataBean.DataBean1 dataBean1) {
-            TextView userNameView = (TextView) customFindViewByID(R.id.item_picture_name);
-            TextView contentTextView = (TextView) customFindViewByID(R.id.item_picture_text);
-            ImageView userIconView = (ImageView) customFindViewByID(R.id.item_picture_icon);
-            TextView diggTextView = (TextView) customFindViewByID(R.id.item_picture_diggText);
-            TextView buryTextView = (TextView) customFindViewByID(R.id.item_picture_buryText);
-            TextView shareTextView = (TextView) customFindViewByID(R.id.item_picture_shareText);
-            ImageView diggImageView = (ImageView) customFindViewByID(R.id.item_picture_diggImage);
-            ImageView buryImageView = (ImageView) customFindViewByID(R.id.item_picture_buryImage);
-            ImageView shareImageView = (ImageView) customFindViewByID(R.id.item_picture_shareImage);
-            ImageView pictureImageView = (ImageView) customFindViewByID(R.id.item_picture_image);
-            if (userNameView != null && dataBean1 != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null) {
-                userNameView.setText(dataBean1.getGroup().getUser().getName());
+        void bindView(PictureModel.DataBean.DataBean1 dataBean1) {
+            mDataBean1 = dataBean1;
+            initFindView();
+            initData(dataBean1);
+            initImageState(dataBean1);
+            setListeners();
+        }
+
+        private void setListeners() {
+            mDiggLayout.setOnClickListener(this);
+            mBuryLayout.setOnClickListener(this);
+            mShareLayout.setOnClickListener(this);
+        }
+
+        private void initImageState(PictureModel.DataBean.DataBean1 dataBean1) {
+            if (!dataBean1.isChoose()) {
+                mDiggImageView.setImageResource(R.drawable.ic_digg_normal);
+                mBuryImageView.setImageResource(R.drawable.ic_bury_normal);
+                mShareImageView.setImageResource(R.drawable.ic_more_action_normal);
+                return;
             }
-            if (contentTextView != null && dataBean1.getGroup() != null) {
-                contentTextView.setText(dataBean1.getGroup().getText());
-                if ("".equals(contentTextView.getText()) || contentTextView.getText() == null) {
-                    contentTextView.setVisibility(View.GONE);
+            if (dataBean1.isChooseShare()) {
+                mShareImageView.setImageResource(R.drawable.ic_more_action_pressed);
+            }
+            if (dataBean1.isChooseDigg()) {
+                mDiggImageView.setImageResource(R.drawable.ic_digg_pressed);
+                return;
+            }
+            if (dataBean1.isChooseBury()) {
+                mBuryImageView.setImageResource(R.drawable.ic_bury_pressed);
+            }
+
+        }
+
+        private void initData(PictureModel.DataBean.DataBean1 dataBean1) {
+            if (mUserNameView != null && dataBean1 != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null) {
+                mUserNameView.setText(dataBean1.getGroup().getUser().getName());
+            }
+            if (mContentTextView != null && dataBean1.getGroup() != null) {
+                mContentTextView.setText(dataBean1.getGroup().getText());
+                if ("".equals(mContentTextView.getText()) || mContentTextView.getText() == null) {
+                    mContentTextView.setVisibility(View.GONE);
                 }
             }
-            if (userIconView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null && dataBean1.getGroup().getUser().getAvatar_url() != null && !"".equals(dataBean1.getGroup().getUser().getAvatar_url())) {
+            if (mUserIconView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getUser() != null && dataBean1.getGroup().getUser().getAvatar_url() != null && !"".equals(dataBean1.getGroup().getUser().getAvatar_url())) {
                 Glide.with(mContext).load(dataBean1.getGroup().getUser().getAvatar_url())
-                        .into(userIconView);
+                        .into(mUserIconView);
             }
-            if (diggTextView != null && dataBean1.getGroup() != null) {
-                diggTextView.setText(String.valueOf(dataBean1.getGroup().getDigg_count()));
+            if (mDiggTextView != null && dataBean1.getGroup() != null) {
+                mDiggTextView.setText(String.valueOf(dataBean1.getGroup().getDigg_count()));
             }
-            if (buryTextView != null && dataBean1.getGroup() != null) {
-                buryTextView.setText(String.valueOf(dataBean1.getGroup().getBury_count()));
+            if (mBuryTextView != null && dataBean1.getGroup() != null) {
+                mBuryTextView.setText(String.valueOf(dataBean1.getGroup().getBury_count()));
             }
-            if (shareTextView != null && dataBean1.getGroup() != null) {
-                shareTextView.setText(String.valueOf(dataBean1.getGroup().getShare_count()));
+            if (mShareTextView != null && dataBean1.getGroup() != null) {
+                mShareTextView.setText(String.valueOf(dataBean1.getGroup().getShare_count()));
             }
-            if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getGifvideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0) != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl())) {
-                if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getLarge_image() != null && dataBean1.getGroup().getLarge_image().getUrl_list() != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0) != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null)) {
+            if (mPictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getGifvideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list() != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0) != null && dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getGifvideo().getA480PVideo().getUrl_list().get(0).getUrl())) {
+                if (mPictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getLarge_image() != null && dataBean1.getGroup().getLarge_image().getUrl_list() != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0) != null && dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl() != null)) {
                     int width = dataBean1.getGroup().getLarge_image().getWidth();
                     int height = dataBean1.getGroup().getLarge_image().getHeight();
                     Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
                     mImageView.setImageBitmap(scaledBitmap);
                     Drawable drawable = mImageView.getDrawable();
-//                        if (gifImageView != null) {
-//                            gifImageView.setVisibility(View.VISIBLE);
-//                        }
-//                        Glide.with(mContext)
-//                                .load(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl())
-//                                .asGif()
-//                                .placeholder(drawable)
-//                                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-//                                .into(new Target<GifDrawable>() {
-//                                    @Override
-//                                    public void onLoadStarted(Drawable placeholder) {
-////                                        Glide.with(mContext)
-////                                                .load(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl())
-////                                                .asBitmap()
-////                                                .placeholder(placeholder)
-////                                                .into(pictureImageView);
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-////                                        if (gifImageView != null) {
-//                                            gifImageView.setVisibility(View.INVISIBLE);
-////                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void onResourceReady(GifDrawable resource, GlideAnimation<? super GifDrawable> glideAnimation) {
-////                                        if (gifImageView != null) {
-//                                            gifImageView.setVisibility(View.INVISIBLE);
-////                                        }
-//                                        pictureImageView.setImageDrawable(resource);
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onLoadCleared(Drawable placeholder) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void getSize(SizeReadyCallback cb) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void setRequest(Request request) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public Request getRequest() {
-//                                        return null;
-//                                    }
-//
-//                                    @Override
-//                                    public void onStart() {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onStop() {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onDestroy() {
-//
-//                                    }
-//                                });
                     Glide.with(mContext)
                             .load(dataBean1.getGroup().getLarge_image().getUrl_list().get(0).getUrl())
                             .asGif()
                             .placeholder(drawable)
                             .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                            .into(pictureImageView);
+                            .into(mPictureImageView);
                     return;
                 }
-            } else if (pictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddle_image() != null && dataBean1.getGroup().getMiddle_image().getUrl_list() != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null)) {
+            } else if (mPictureImageView != null && dataBean1.getGroup() != null && dataBean1.getGroup().getMiddle_image() != null && dataBean1.getGroup().getMiddle_image().getUrl_list() != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0) != null && dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null && !"".equals(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl() != null)) {
                 int width = dataBean1.getGroup().getMiddle_image().getWidth();
                 int height = dataBean1.getGroup().getMiddle_image().getHeight();
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(mBitmap, width, height, false);
-//                if (gifImageView != null) {
-//                    gifImageView.setVisibility(View.GONE);
-//                }
                 mImageView.setImageBitmap(scaledBitmap);
                 Drawable drawable = mImageView.getDrawable();
                 Glide.with(mContext)
                         .load(dataBean1.getGroup().getMiddle_image().getUrl_list().get(0).getUrl())
                         .placeholder(drawable)
                         .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                        .into(pictureImageView);
+                        .into(mPictureImageView);
                 return;
             }
+        }
 
+        private void initFindView() {
+            mUserNameView = (TextView) customFindViewByID(R.id.item_picture_name);
+            mContentTextView = (TextView) customFindViewByID(R.id.item_picture_text);
+            mUserIconView = (ImageView) customFindViewByID(R.id.item_picture_icon);
+            mDiggTextView = (TextView) customFindViewByID(R.id.item_picture_diggText);
+            mBuryTextView = (TextView) customFindViewByID(R.id.item_picture_buryText);
+            mShareTextView = (TextView) customFindViewByID(R.id.item_picture_shareText);
+            mDiggImageView = (ImageView) customFindViewByID(R.id.item_picture_diggImage);
+            mBuryImageView = (ImageView) customFindViewByID(R.id.item_picture_buryImage);
+            mShareImageView = (ImageView) customFindViewByID(R.id.item_picture_shareImage);
+            mDiggLayout = (LinearLayout) customFindViewByID(R.id.item_picture_diggLayout);
+            mBuryLayout = (LinearLayout) customFindViewByID(R.id.item_picture_buryLayout);
+            mShareLayout = (LinearLayout) customFindViewByID(R.id.item_picture_shareLayout);
+            mPictureImageView = (ImageView) customFindViewByID(R.id.item_picture_image);
         }
 
         public View customFindViewByID(int resourceID) {
@@ -232,6 +214,39 @@ public class PictureFragmentAdapter extends RecyclerView.Adapter {
             return ret;
         }
 
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.item_picture_diggLayout:
+                    if (mDataBean1.isChooseBury() || mDataBean1.isChooseDigg()) {
+                        CustomToast.getToast(mContext, "你已经选择过啦~").show();
+                        return;
+                    }
+                    mDataBean1.setChoose(true);
+                    mDataBean1.setChooseDigg(true);
+                    mDiggTextView.setText(mDataBean1.getGroup().getDigg_count() + 1 + "");
+                    mDiggImageView.setImageResource(R.drawable.ic_digg_pressed);
+                    break;
+                case R.id.item_picture_buryLayout:
+                    if (mDataBean1.isChooseBury() || mDataBean1.isChooseDigg()) {
+                        CustomToast.getToast(mContext, "你已经选择过啦~").show();
+                        return;
+                    }
+                    mDataBean1.setChooseBury(true);
+                    mDataBean1.setChoose(true);
+                    mBuryTextView.setText(mDataBean1.getGroup().getBury_count() + 1 + "");
+                    mBuryImageView.setImageResource(R.drawable.ic_bury_pressed);
+                    break;
+                case R.id.item_picture_shareLayout:
+                    mShareImageView.setImageResource(R.drawable.ic_more_action_pressed);
+                    mShareTextView.setText(mDataBean1.getGroup().getShare_count() + 1 + "");
+                    mDataBean1.setChooseShare(true);
+                    mDataBean1.setChoose(true);
+
+                    break;
+
+            }
+        }
     }
 
     public class FoorViewHolder extends RecyclerView.ViewHolder {

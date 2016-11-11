@@ -77,6 +77,42 @@ public class PictureModel {
         }
 
         public static class DataBean1 {
+            private boolean mChoose;
+            private boolean mChooseDigg;
+            private boolean mChooseBury;
+            private boolean mChooseShare;
+
+            public boolean isChooseShare() {
+                return mChooseShare;
+            }
+
+            public void setChooseShare(boolean chooseShare) {
+                mChooseShare = chooseShare;
+            }
+
+            public boolean isChooseDigg() {
+                return mChooseDigg;
+            }
+
+            public void setChooseDigg(boolean chooseDigg) {
+                mChooseDigg = chooseDigg;
+            }
+
+            public boolean isChooseBury() {
+                return mChooseBury;
+            }
+
+            public void setChooseBury(boolean chooseBury) {
+                mChooseBury = chooseBury;
+            }
+
+            public boolean isChoose() {
+                return mChoose;
+            }
+
+            public void setChoose(boolean choose) {
+                this.mChoose = choose;
+            }
             @Override
             public String toString() {
                 return "DataBean1{" +
