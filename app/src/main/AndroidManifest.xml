@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.jkt.workdaunzi">
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -62,7 +62,12 @@
         android:exported="true"
         android:screenOrientation="portrait" />
 
-
+        <activity android:name=".DocActivity">
+        </activity>
+        <activity android:name=".SlideActivity">
+        </activity>
+        <activity android:name=".Topic2Activity">
+        </activity>
     </application>
 
 </manifest>

@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment implements TabLayout.OnTabSelectedLis
 
 
     private void initTabLayout() {
-        String[] tabs = {"直播", "推荐", "视频", "图片", "段子", "精华"};
+        String[] tabs = {"直播", "推荐", "视频", "图片", "段子"};
         for (int i = 0; i < tabs.length; i++) {
             TabLayout.Tab tab = mTabLayout.newTab();
             tab.setText(tabs[i]);
@@ -63,7 +63,6 @@ public class HomeFragment extends Fragment implements TabLayout.OnTabSelectedLis
         fragments.add(new VideoFragment());
         fragments.add(new PictureFragment());
         fragments.add(new DuanziFragment());
-        fragments.add(new NiceFragment());
         FragmentPagerAdapter adapter = new FragmentPagerAdapter(getChildFragmentManager(), fragments);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(6);

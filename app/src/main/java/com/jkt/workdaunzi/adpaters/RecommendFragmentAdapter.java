@@ -140,8 +140,6 @@ public class RecommendFragmentAdapter extends RecyclerView.Adapter {
             initData(dataBean1);
             initImageState(dataBean1);
             setListeners();
-
-
         }
 
         private void setListeners() {
@@ -305,7 +303,8 @@ public class RecommendFragmentAdapter extends RecyclerView.Adapter {
                         mVideoView.setMediaController(mMediaController);
                         mVideoView.setVisibility(View.VISIBLE);
                         mVideoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mPictureImageView.getHeight()));
-                        mVideoView.setVideoPath(tag);
+//                        mVideoView.setVideoPath(mDataBean1.getGroup().getMp4_url());
+                        mVideoView.setVideoPath("https://www.vidio.com/videos/554353/vjs_playlist.m3u8");
                         mVideoView.setOnCompletionListener(this);
                         mVideoView.setOnErrorListener(this);
                         mVideoView.setOnPreparedListener(this);
@@ -399,8 +398,6 @@ public class RecommendFragmentAdapter extends RecyclerView.Adapter {
             initData(dataBean1);
             initImageState(dataBean1);
             setListeners();
-
-
         }
 
         private void setListeners() {

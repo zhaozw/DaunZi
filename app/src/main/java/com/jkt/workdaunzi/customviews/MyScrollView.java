@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 /**
@@ -47,8 +46,4 @@ public class MyScrollView extends ScrollView {
         void scrollChanged(MyScrollView myScrollView, int l, int t, int oldl, int oldt);
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return true;
-    }
 }
